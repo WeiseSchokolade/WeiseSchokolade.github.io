@@ -58,7 +58,6 @@ public class Game {
 		for (int y = 0; y < mapHeight; y++) {
 			bombs[y] = new Bomb[mapWidth];
 		}
-		Logging.logInfo("Instanciated new game!");
 	}
 	
 	public void start() {
@@ -100,7 +99,6 @@ public class Game {
 		if (ending) {
 			end_time -= deltaTimeMS;
 			if (end_time < 0) {
-				//System.out.println("Took " + (System.currentTimeMillis() - time) + " to end game!");
 				stopGame(alivePlayerID);
 			}
 			return;
@@ -146,10 +144,8 @@ public class Game {
 			}
 			if (alivePlayerAmount == 1) {
 				this.ending = true;
-				System.out.println("Started to end game");
 				time = System.currentTimeMillis();
 			} else if (alivePlayerAmount == 0) {
-				Logging.logInfo("Marked for deletion");
 				this.isRunning = false;
 				this.isActive = false;
 			}
