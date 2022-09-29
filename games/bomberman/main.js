@@ -59,7 +59,7 @@ window.addEventListener("load", function () {
 				this.tileSize = 64;
 				this.resizeFactor = this.width / this.tileSize;
 				this.input = new InputHandler(this);
-				this.connection = new ConnectionHandler(this, "ws://127.0.0.1");
+				this.connection = new ConnectionHandler(this, "ws://45.131.111.244:2009");
 				this.grid = false;
 				this.player = new Player(this);
 				this.players = [];

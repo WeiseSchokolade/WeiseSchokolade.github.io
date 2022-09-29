@@ -1,5 +1,8 @@
 package de.schoko.bomberman.server;
 
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -18,6 +21,8 @@ public class Server extends WebSocketServer {
 	private volatile boolean serverOnline = false;
 	
 	public Server() {
+		super(new InetSocketAddress(2009));
+		
 		games = new ArrayList<>();
 		unadded_players = new ArrayList<>();
 		
@@ -91,6 +96,12 @@ public class Server extends WebSocketServer {
 						break;
 					}
 					
+					try {
+						Thread.sleep(2);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					
 					deltaTime = System.nanoTime() - lastTime;
 				}
 				Logging.logInfo("Somehow the server main function has ended.");
@@ -148,7 +159,11 @@ public class Server extends WebSocketServer {
 
 	@Override
 	public void onStart() {
-		Logging.logInfo("Started server");
+		try {
+			Logging.logInfo("Started server on address " + InetAddress.getLocalHost().getHostAddress() + " (iA)");
+		} catch (UnknownHostException e) {
+			Logging.logInfo("Started server on address " + getAddress().getHostName() + " (eA)");
+		}
 		serverOnline = true;
 	}
 }
