@@ -23,6 +23,9 @@ export class ConnectionHandler {
 		this.socket.onmessage = (message) => {
 			this.handlePacket(JSON.parse(message.data));
 		}
+		this.socket.onerror = ((event) => {
+			console.log(event);
+		});
 	}
 	sendPacket(packet) {
 		if (packet.type != "PlayerUpdate" && packet.type != "AddBomb") {
