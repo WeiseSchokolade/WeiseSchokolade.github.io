@@ -101,14 +101,14 @@ function check(event) {
 				}
 			}
 			if (isCorrect) {
-				prompt_item.textContent = "Correct! Enter the note you see here";
+				prompt_item.textContent = "Richtig! Gib die Note ein:";
 				lastNote = getNote();
 				animate();
 			} else {
-				prompt_item.textContent = "'" + input + "' is not the correct note! Try again!";
+				prompt_item.textContent = "'" + input + "' ist nicht die richtige Note! Veruch es nochmal!";
 			}
 		} else {
-			prompt_item.textContent = "'" + input + "' is not a valid note! Try again!";
+			prompt_item.textContent = "'" + input + "' ist nicht die richtige Note! Versuch es nochmal!";
 		}
 		note_input.value = "";
 	}
