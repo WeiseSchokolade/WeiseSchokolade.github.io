@@ -1,12 +1,34 @@
+const difficulty_input = document.getElementById("difficulty");
 const canvas = document.getElementById("canvas1");
 const note_input = document.getElementById("note_input");
 const prompt_item = document.getElementById("prompt");
 canvas.width = 200;
 canvas.height = 150;
 const ctx = canvas.getContext("2d");
-const notes = ["C", "D", "E", "F", "G", "A", "H", "C", "D", "E", "F", "G", "A", "H", "C"];
+let difficulty = "simple";
+		  let notes = ["C", "D", "E", "F", "G", "A", "H", "C", "D", "E", "F", "G", "A", "H", "C"];
+const extraLines = [[0], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ],[12],[12],[12,14]];
 let lastNote = 0;
 let i = 0;
+
+function updateDifficulty() {
+	if (difficulty == "simple") {
+		notes = ["C", "D", "E", "F", "G", "A", "H", "C", "D", "E", "F", "G", "A", "H", "C"];
+	}
+	if (difficulty == "normal") {
+		notes = ["c1", "d1", "e1", "f1", "g1", "a1", "h1", "c2", "d2", "e2", "f2", "g2", "a2", "h2", "c3"];
+	}
+}
+
+difficulty_input.addEventListener("change", (event) => {
+	difficulty = difficulty_input.value;
+	updateDifficulty();
+});
+
+window.addEventListener("load", () => {
+	difficulty = difficulty_input.value;
+	updateDifficulty();
+});
 
 function drawLine(y) {
 	ctx.strokeStyle = "black";
@@ -17,8 +39,24 @@ function drawLine(y) {
 	ctx.stroke();
 }
 
+function drawNoteLine(note) {
+	let lineSpacing = canvas.height / 10;
+	let centerLine = canvas.height / 2;
+
+	let x = canvas.width / 2;
+	
+	let y = -note * lineSpacing / 2 + centerLine + lineSpacing * 3
+
+	ctx.strokeStyle = "black";
+	ctx.lineWidth = 2;
+	ctx.beginPath();
+	ctx.moveTo(x + lineSpacing, y);
+	ctx.lineTo(x - lineSpacing, y);
+	ctx.stroke();
+}
+
 function getNote() {
-	return Math.floor(Math.random() * 13);
+	return Math.floor(Math.random() * notes.length);
 }
 
 function drawNote(note) {
@@ -50,7 +88,11 @@ function redraw() {
 
 function check(event) {
 	if (event.keyCode == 13) {
-		let input = note_input.value.toUpperCase();
+		let input = note_input.value;
+		if (difficulty == "simple") {
+			input = note_input.value.toUpperCase();
+		}
+		
 		if (notes.indexOf(input) != -1) {
 			let isCorrect = false;
 			for (let i = 0; i < notes.length; i++) {
@@ -75,6 +117,11 @@ function check(event) {
 function animate() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	redraw();
+	
+	let extraNoteLines = extraLines[lastNote];
+	for (let i = 0; i < extraNoteLines.length; i++) {
+		drawNoteLine(extraNoteLines[i]);
+	}
 	drawNote(lastNote);
 }
 lastNote = getNote();
