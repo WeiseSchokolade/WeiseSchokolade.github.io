@@ -1,0 +1,27 @@
+.center {
+    width: 500px;
+    height: 500px;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    text-align: center;
+    transform: translate(-50%, -50%);
+}
+
+#canvas1 {
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.game_img {
+    display: none;
+}
+
+.info {
+    border: 1px solid black;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 3px;
+    background: rgb(240, 240, 240);
+    font-family: monospace;
+}
