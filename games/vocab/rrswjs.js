@@ -168,11 +168,13 @@ export class Mouse {
 		this.y = 0;
 		this.scroll = 0;
 		this.pressed = false;
+		this.recentlyPressed = false;
 		window.addEventListener("mousemove", (event) => this.eventCall(event));
 		window.addEventListener("click", (event) => this.eventCall(event));
 		window.addEventListener("mousedown", (event) => {
 			this.eventCall(event);
 			this.pressed = true;
+			this.recentlyPressed = true;
 		});
 		window.addEventListener("mouseup", (event) => {
 			this.eventCall(event);
@@ -184,6 +186,9 @@ export class Mouse {
 		})
 		window.addEventListener("touchstart", (event) => {
 			this.pressed = true;
+			this.recentlyPressed = true;
+			this.x = this.graph.convBackFromSX(event.touches[0].pageX - this.canvas.getBoundingClientRect().left);
+			this.y = this.graph.convBackFromSY(event.touches[0].pageY - this.canvas.getBoundingClientRect().top);
 		});
 		window.addEventListener("touchend", (event) => {
 			this.pressed = false;
@@ -194,8 +199,14 @@ export class Mouse {
 			this.y = this.graph.convBackFromSY(event.touches[0].pageY - this.canvas.getBoundingClientRect().top);
 		})
 	}
+	update() {
+		this.recentlyPressed = false;
+	}
 	eventCall(event) {
 		this.x = this.graph.convBackFromSX(event.clientX - this.canvas.getBoundingClientRect().left);
 		this.y = this.graph.convBackFromSY(event.clientY - this.canvas.getBoundingClientRect().top);
+	}
+	wasRecentlyPressed() {
+		return this.recentlyPressed;
 	}
 }

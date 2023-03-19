@@ -48,14 +48,20 @@ export class Game {
 				if (!overlaps) break;
 			}
 			this.objs.push(word);
-			this.total++;
 		}
+		this.mouse.update();
 		this.objs.forEach(word => {
 			word.update(deltaTime);
 		})
 		this.objs = this.objs.filter(word => {
-			if (word.correct && word.remove == word.removeTime) {
-				this.pickNewType();
+			if (word.remove == word.removeTime) {
+				this.total++;
+				if (word.correct) {
+					this.pickNewType();
+					this.totalCorrect++;
+				} else {
+					this.totalWrong++;
+				}
 			}
 			return !word.shouldRemove
 		});
@@ -82,7 +88,6 @@ export class Game {
 		let i = this.newTypes.splice(rn, 1)[0];
 		let type = this.types[i];
 		let word = words[Math.floor(Math.random() * words.length)][i];
-		console.log(word, rn, i, this.newTypes.length);
 		this.comingObjs.push(new Word(this, word, type));
 	}
 
