@@ -4,6 +4,10 @@
     box-sizing: border-box;
 }
 
+.hint {
+	text-align: center;
+}
+
 #canvas1 {
     position: absolute;
     top: 50%;
