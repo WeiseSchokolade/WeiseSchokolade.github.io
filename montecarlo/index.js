@@ -14,7 +14,7 @@ let points = []
 
 class Point {
 	constructor() {
-		this.x = Math.random();
+		this.x = Math.random() * 2;
 		this.y = Math.random();
 		
 		this.draw(ctx);
@@ -32,7 +32,7 @@ class Point {
 		context.fill();
 	}
 	getDistanceToOrigin() {
-		return Math.sqrt(this.x * this.x + this.y * this.y);
+		return Math.sqrt((this.x / 2) ** 2 + (this.y / 1) ** 2);
 	}
 }
 
@@ -66,9 +66,9 @@ function updateInfo() {
 }
 
 function convSXY(x, y) {
-	let zoom = canvas.width / 2.5 * 2;
-	let camX = 0.5;
-	let camY = 0.5;
+	let zoom = canvas.width / 2.5 * 1;
+	let camX = 1;
+	let camY = 1;
 	return [(x - camX) * zoom + canvas.width / 2 + camX, (y - camY) * -zoom + canvas.height / 2];
 }
 
@@ -81,10 +81,12 @@ function drawBackground(context) {
 	context.fillStyle ="#FFEFCC";
 	context.strokeStyle = "black";
 	context.lineWidth = 2;
+
+	let zoom = 1;
 	
 	context.beginPath();
 	let coords = convSXY(0, 0)
-	let radius = canvas.width / 2.5 * 2;
+	let radius = canvas.width / 2.5 * zoom;
 	context.arc(coords[0], coords[1], radius, 0, 2 * Math.PI, true)
 	context.fill();
 	context.strokeRect(coords[0] - radius, coords[1] - radius, radius * 2, radius * 2);

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Live Edit</title>
+	<style>
+		.heading {
+			margin: 0px;
+			font-family: Consolas;
+			font-size: 30px;
+		}
+		textarea {
+			resize: none;
+			margin: 0px;
+			color: white;
+			padding-top: 0px;
+			padding-bottom: 0px;
+			border: none;
+			user-select: none;
+			background-color: rgb(48, 48, 48);
+			flex: 2;
+		}
+		
+		.leftBox {
+			width: 50%;
+			height: 100%;
+			position: absolute;
+			direction: flex;
+			flex-direction: column-reverse;
+			top: 0px;
+			left: 0px;
+			background-color: rgb(123, 0, 0);
+		}
+		.scriptBox {
+			height: 50%;
+			display: flex;
+			flex-direction: column;
+		}
+		.contentBox {
+			position: absolute;
+			top: 0px;
+			left: 50%;
+		}
+	</style>
+</head>
+<body>
+	<div>
+		<div class="leftBox">
+			<div class="scriptBox">
+				<p class="heading">HTML</p>
+				<textarea id="htmlBox"></textarea>
+			</div>
+			<div class="scriptBox">
+				<p class="heading" style="display: flex">
+					JavaScript
+					<button id="runBtn" style="margin-left: auto; background-color: green; border-color: darkgreen;">Run</button>
+				</p>
+				<textarea id="scriptBox"></textarea>
+			</div>
+		</div>
+		<div id="contentBox" class="contentBox">
+			<h1>
+				SD
+			</h1>
+		</div>
+	</div>
+	<script>
+		const htmlBox = document.getElementById("htmlBox")
+		const scriptBox = document.getElementById("scriptBox");
+		const contentBox = document.getElementById("contentBox");
+		const runButton = document.getElementById("runBtn");
+
+		htmlBox.value = "";
+		scriptBox.value = "";
+		let htmlBoxValue = htmlBox.value;
+		let scriptBoxValue = scriptBox.value;
+		function update() {
+			if (htmlBox.value != contentBox.value) {
+				contentBox.innerHTML = htmlBox.value;
+			}
+		}
+		setInterval(update, 50);
+		let runningTimeout = -1;
+		runButton.addEventListener("click", function() {
+			clearTimeout(runningTimeout);
+			runningTimeout = setTimeout(() => {
+				eval(scriptBox.value);
+			});
+		});
+	</script>
+</body>
+</html>
