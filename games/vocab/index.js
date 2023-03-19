@@ -4,7 +4,10 @@ import { Game } from "./game.js";
 const canvas = document.getElementById("canvas1");
 const ctx = canvas.getContext("2d");
 
+
 window.addEventListener("load", function() {
+	canvas.width = canvas.clientWidth;
+	canvas.height = canvas.clientWidth;
 	class Render extends Renderer {
 		constructor() {
 			super();
