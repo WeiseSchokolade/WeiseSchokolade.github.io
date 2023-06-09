@@ -55,7 +55,7 @@ body {
 .stat {
     font-family: Consolas, monospace;
     flex: 1 1 0;
-    width: 100px;
+    width: 120px;
     text-align: center;
     margin: 4px;
     padding: 5px;
