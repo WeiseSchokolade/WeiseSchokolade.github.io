@@ -1,0 +1,33 @@
+body {
+    background-color: darkolivegreen;
+}
+
+.contentbox {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    margin: 200px;
+}
+
+.headline {
+    font-size: 50px;
+    font-family: "Verdana";
+    color: white;
+    user-select: none;
+}
+
+.linkbtn {
+    margin-top: 10%;
+    width: max-content;
+    background-color: white;
+    padding: 10px;
+    border: solid black;
+    border-radius: 10px;
+}
+
+.linkbtn:hover {
+    border: solid darkgray;
+}
