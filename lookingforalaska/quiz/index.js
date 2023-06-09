@@ -54,7 +54,6 @@ function revealAnswer(question) {
             break;
         case "B":
             optionB.style.backgroundColor = "green";
-            optionA.style.borderColor = "white";
             break;
         case "C":
             optionC.style.backgroundColor = "green";
