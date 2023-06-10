@@ -20,7 +20,7 @@ const questions = [
     {"question": "What's Chip's nickname?", "optionA": "The Chipmunk", "optionB": "The Colonel", "optionC": "The Carrier", "correct": "B"},
     {"question": "What does the term Weekday Warriors refer to?", "optionA": "Students that act like Robin Hood", "optionB": "Students from Birmingham that use Culver Creek as a private school", "optionC": "A group of students that fight against bullying", "correct": "B"},
     {"question": "Which class is mentioned a lot?", "optionA": "World Religions", "optionB": "Physical Education", "optionC": "Latin Literature", "correct": "A"},
-    {"question": "How is the principal of the school refered to?", "optionA": "The Eager", "optionB": "The Sleeper", "optionC": "The Eagle", "correct": "C"},
+    {"question": "How is the principal of the school referred to?", "optionA": "The Eager", "optionB": "The Sleeper", "optionC": "The Eagle", "correct": "C"},
     {"question": "Why do Takumi and Miles light firecrackers in the chapter \"three days before\"?", "optionA": "They want to make him fall into the lake", "optionB": "They want to distract The Eagle from Alaska and Chip", "optionC": "They like making noise", "correct": "B"},
     {"question": "Why might the book be called \"Looking for Alaska\"?", "optionA": "Alaska ran away and the book is about Chip and Miles looking for her", "optionB": "The title is a play on words since Miles and Chip are trying to meet Alaska at the north pole", "optionC": "Miles and Chip try to find out more about Alaska's death", "correct": "C"},
     {"question": "Who wrote \"Looking for Alaska\"?", "optionA": "Joe Blue", "optionB": "Frank Yellow", "optionC": "John Green", "correct": "C"},
