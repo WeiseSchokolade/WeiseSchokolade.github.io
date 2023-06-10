@@ -11,12 +11,13 @@ body {
     flex-direction: column;
     top: 50%;
     left: 50%;
+    -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .headline {
     font-size: 50px;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
     color: white;
     user-select: none;
     text-align: center;
@@ -40,4 +41,13 @@ body {
 
 .linkbtn:hover {
     border: solid darkgray;
+}
+
+.info {
+    margin-top: 30px;
+    background-color: lightgray;
+    border: solid darkgray;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
 }
