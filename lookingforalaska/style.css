@@ -3,24 +3,34 @@ body {
 }
 
 .contentbox {
+    position: fixed;
     display: flex;
     flex-wrap: nowrap;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-
-    margin: 200px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .headline {
     font-size: 50px;
-    font-family: "Verdana";
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: white;
+    user-select: none;
+    text-align: center;
+}
+
+.subheadline {
+    font-size: 25px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
     color: white;
     user-select: none;
 }
 
 .linkbtn {
-    margin-top: 10%;
+    margin-top: 30px;
     width: max-content;
     background-color: white;
     padding: 10px;
