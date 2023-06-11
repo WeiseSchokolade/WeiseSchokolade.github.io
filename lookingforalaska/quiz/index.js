@@ -25,7 +25,7 @@ const questions = [
     {"question": "Why might the book be called \"Looking for Alaska\"?", "optionA": "Alaska ran away and the book is about Chip and Miles looking for her", "optionB": "The title is a play on words since Miles and Chip are trying to meet Alaska at the north pole", "optionC": "Miles and Chip try to find out more about Alaska's death", "correct": "C"},
     {"question": "Who wrote \"Looking for Alaska\"?", "optionA": "Joe Blue", "optionB": "Frank Yellow", "optionC": "John Green", "correct": "C"},
     {"question": "What drug do the protagonists excessively consume?", "optionA": "Coffee", "optionB": "Cigarettes", "optionC": "Apple Juice", "correct": "B"},
-    {"question": "Which charcter is NOT part of the book?", "optionA": "Frank Walter", "optionB": "William Morse", "optionC": "Kevin Richman", "correct": "A"}
+    {"question": "Which character is NOT part of the book?", "optionA": "Frank Walter", "optionB": "William Morse", "optionC": "Kevin Richman", "correct": "A"}
 ]
 
 function enterValue(question) {
@@ -82,6 +82,7 @@ function copyToClipboard(text) {
 
 function complete(total, correct, wrong) {
     updateStats(total, correct, wrong);
+    questionBox.textContent = "You completed the quiz!";
     optionBox.style.display = "none";
     endBox.style.display = "flex";
 
