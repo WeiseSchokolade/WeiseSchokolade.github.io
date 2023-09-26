@@ -1,4 +1,4 @@
-import {Mouse} from "./rrswjs.js";
+import {Mouse} from "../rrswjs.js";
 
 const words = [
 	["je suis", "tu es", "il est", "nous sommes", "vous êtes", "ils sont"],
@@ -92,7 +92,16 @@ export class Game {
 	}
 
 	pickNewType() {
-		this.currentType = this.types[Math.floor(this.types.length * Math.random())];
+		let possibleTypes = new Set();
+		this.objs.forEach(word => {
+			possibleTypes.add(word.solution);
+		});
+
+		if (possibleTypes.size == 0) {
+			this.currentType = this.types[Math.floor(this.types.length * Math.random())];
+		} else {
+			this.currentType = possibleTypes[Math.floor(possibleTypes.length * Math.random())];
+		}
 	}
 }
 

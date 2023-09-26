@@ -6,6 +6,8 @@ export class RRSWJS {
 		this.camera = new Camera(0, 0, 50);
 		this.mouse = new Mouse(canvas, null);
 
+		renderer.load(this);
+
 		this.lastTimeStamp = 0;
 		this.requestFrame();
 	}
@@ -16,6 +18,7 @@ export class RRSWJS {
 		let g = new Graph(this.canvas, this.camera, this.renderCosys);
 		this.mouse.graph = g;
 		this.renderer.draw(g, deltaTime);
+		this.mouse.update();
 		this.requestFrame();
 	}
 
@@ -25,6 +28,9 @@ export class RRSWJS {
 }
 
 export class Renderer {
+	load(rrs) {
+	}
+
 	draw(graph, deltaTime) {
 		graph.ctx.strokeRect(0, 0, 20, 20);
 		graph.ctx.stroke();
@@ -69,6 +75,15 @@ export class Graph {
 	drawLine(x0, y0, x1, y1, color) {
 		this.ctx.beginPath();
 		this.ctx.strokeStyle = color;
+		this.ctx.moveTo(this.convSX(x0), this.convSY(y0));
+		this.ctx.lineTo(this.convSX(x1), this.convSY(y1));
+		this.ctx.stroke();
+	}
+
+	drawLine(x0, y0, x1, y1, color, strokeWidth) {
+		this.ctx.beginPath();
+		this.ctx.strokeStyle = color;
+		this.ctx.lineWidth = this.convStrokeWidth(strokeWidth);
 		this.ctx.moveTo(this.convSX(x0), this.convSY(y0));
 		this.ctx.lineTo(this.convSX(x1), this.convSY(y1));
 		this.ctx.stroke();
@@ -150,6 +165,14 @@ export class Graph {
 	convBackFromSH(height) {
 		return height / this.zoom;
 	}
+
+	convStrokeWidth(width) {
+		return width * this.zoom;
+	}
+
+	convBackFromScreenStrokeWidth(sw) {
+		return sw / this.zoom;
+	}
 }
 
 export class Camera {
@@ -166,12 +189,14 @@ export class Mouse {
 		this.graph = graph;
 		this.x = 0;
 		this.y = 0;
+		this.screenX = 0;
+		this.screenY = 0;
 		this.scroll = 0;
 		this.pressed = false;
 		this.recentlyPressed = false;
 		window.addEventListener("mousemove", (event) => this.eventCall(event));
-		window.addEventListener("click", (event) => this.eventCall(event));
-		window.addEventListener("mousedown", (event) => {
+		canvas.addEventListener("click", (event) => this.eventCall(event));
+		canvas.addEventListener("mousedown", (event) => {
 			this.eventCall(event);
 			this.pressed = true;
 			this.recentlyPressed = true;
@@ -179,32 +204,41 @@ export class Mouse {
 		window.addEventListener("mouseup", (event) => {
 			this.eventCall(event);
 			this.pressed = false;
+			this.recentlyPressed = false;
 		});
-		window.addEventListener("wheel", (event) => {
+		canvas.addEventListener("wheel", (event) => {
 			event.preventDefault();
-			this.scroll = event.deltaY;
+			this.scroll += event.deltaY;
 		})
-		window.addEventListener("touchstart", (event) => {
+		canvas.addEventListener("touchstart", (event) => {
 			this.pressed = true;
 			this.recentlyPressed = true;
-			this.x = this.graph.convBackFromSX(event.touches[0].pageX - this.canvas.getBoundingClientRect().left);
-			this.y = this.graph.convBackFromSY(event.touches[0].pageY - this.canvas.getBoundingClientRect().top);
+			this.tapCall(event);
 		});
-		window.addEventListener("touchend", (event) => {
+		canvas.addEventListener("touchend", (event) => {
 			this.pressed = false;
 		});
-		window.addEventListener("touchmove", (event) => {
+		canvas.addEventListener("touchmove", (event) => {
 			event.preventDefault();
-			this.x = this.graph.convBackFromSX(event.touches[0].pageX - this.canvas.getBoundingClientRect().left);
-			this.y = this.graph.convBackFromSY(event.touches[0].pageY - this.canvas.getBoundingClientRect().top);
+			this.tapCall(event);
 		})
 	}
 	update() {
 		this.recentlyPressed = false;
 	}
 	eventCall(event) {
-		this.x = this.graph.convBackFromSX(event.clientX - this.canvas.getBoundingClientRect().left);
-		this.y = this.graph.convBackFromSY(event.clientY - this.canvas.getBoundingClientRect().top);
+		if (this.graph == null) return;
+		this.screenX = event.clientX - this.canvas.getBoundingClientRect().left;
+		this.screenY = event.clientY - this.canvas.getBoundingClientRect().top;
+		this.x = this.graph.convBackFromSX(this.screenX);
+		this.y = this.graph.convBackFromSY(this.screenY);
+	}
+	tapCall(event) {
+		let ux = (event.touches[0].pageX - this.canvas.getBoundingClientRect().left) / this.canvas.width;
+		let uy = (event.touches[0].pageY - this.canvas.getBoundingClientRect().top) / this.canvas.height;
+		this.x = this.graph.convBackFromSX(ux);
+		this.y = this.graph.convBackFromSY(uy);
+		
 	}
 	wasRecentlyPressed() {
 		return this.recentlyPressed;

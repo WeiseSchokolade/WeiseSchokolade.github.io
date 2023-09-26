@@ -1,13 +1,12 @@
-import { Mouse, Renderer, RRSWJS } from "./rrswjs.js";
+import { Mouse, Renderer, RRSWJS } from "../rrswjs.js";
 import { Game } from "./game.js";
 
 const canvas = document.getElementById("canvas1");
-const ctx = canvas.getContext("2d");
-
+console.log("Area: ", canvas.clientWidth, canvas.clientHeight);
+//canvas.width = canvas.clientWidth;
+//canvas.height = canvas.clientHeight;
 
 window.addEventListener("load", function() {
-	canvas.width = canvas.clientWidth;
-	canvas.height = canvas.clientWidth;
 	class Render extends Renderer {
 		constructor() {
 			super();
