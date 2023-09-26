@@ -10,10 +10,9 @@ html, body {
 }
 
 .toolbox {
-    min-width: 10%;
+    min-width: 250px;
     max-width: 25%;
     padding: 7px;
-    width: fit-content;
     background-color: whitesmoke;
     border-right: solid 2px rgb(207, 207, 207);
     display: flex;

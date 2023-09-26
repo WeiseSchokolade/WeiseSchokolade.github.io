@@ -44,12 +44,17 @@ window.addEventListener("resize", resize);
 resize();
 
 class VectorVisual {
-    constructor(pos, vector) {
+    constructor(pos, vector, color) {
         this.pos = pos;
         this.vector = vector;
         this.recalculate();
-        this.color = randomColor();
+        this.color = color || randomColor();
         this.selected = false;
+    }
+
+    copy() {
+        let copy = new VectorVisual(this.pos.copy(), this.vector.copy(), this.color);
+        return copy;
     }
 
     recalculate() {
@@ -121,10 +126,10 @@ class Render extends Renderer {
         this.vectors = [];
         this.movingVector = null;
         this.useTime = 0;
+        this.vectorInfoVisible = true;
+        this.oldMovingVector = new VectorVisual(new Vector(0, 1), new Vector(1, 0));
         this.updateInfo(new VectorVisual(new Vector(0, 0), new Vector(1, 1)));
         this.setMovingVector(null);
-
-        console.log((new Vector(5, 0).angle(new Vector(0, 1)) / Math.PI) * 180)
     }
 
     load(rrs) {
@@ -226,23 +231,36 @@ class Render extends Renderer {
         this.lastMouseX = newMouseX;
         this.lastMouseY = newMouseY;
 
-        if (this.movingVector != null) {
+        
+        if (this.movingVector != null && 
+            (
+                !(this.oldMovingVector.vector.equals(this.movingVector.vector)) ||
+                !(this.oldMovingVector.pos.equals(this.movingVector.pos))
+            )
+            ) {
             this.updateInfo(this.movingVector);
+            this.oldMovingVector = this.movingVector.copy();
         }
-
+        
         this.vectors.forEach((vector) => {
             vector.draw(graph);
         })
     }
     
     setMovingVector(vector) {
-        if (this.movingVector != null) {
+        if (this.movingVector != null) { // Deselect old vector
             this.movingVector.selected = false;
         }
         if (vector == null) {
-            vectorInfo.style.visibility = "hidden";
+            if (this.vectorInfoVisible) {
+                vectorInfo.style.visibility = "hidden";
+                this.vectorInfoVisible = false;
+            }
         } else {
-            vectorInfo.style.visibility = "visible";
+            if (!this.vectorInfoVisible) {
+                vectorInfo.style.visibility = "visible";
+                this.vectorInfoVisible = true;
+            }
             vector.selected = true;
         }
         this.movingVector = vector;
@@ -252,6 +270,7 @@ class Render extends Renderer {
         let angle = (vector.vector.angle(new Vector(1.0, 0)) / -Math.PI) * 180;
         angle += (angle < 0) ? 360 : 0; 
         let info = [
+            "Vector: ", vector.vector.toString(),
             "Length: ", vector.vector.length().toFixed(2),
             "Angle: ", angle.toFixed(0) + "°"
         ];

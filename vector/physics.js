@@ -8,6 +8,10 @@ export class Vector {
         return new Vector(this.x, this.y);
     }
 
+    equals(v) {
+        return v.x == this.x && v.y == this.y;
+    }
+
     add(v) {
         return new Vector(v.x + this.x, v.y + this.y);
     }
@@ -53,6 +57,10 @@ export class Vector {
         let dot = this.dotProduct(vector);
         let det = this.determinant(vector);
         return Math.atan2(det, dot);
+    }
+
+    toString() {
+        return "(" + this.x.toFixed(2) + "|" + this.y.toFixed(2) + ")";
     }
 
 }
