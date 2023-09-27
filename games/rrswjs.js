@@ -194,6 +194,7 @@ export class Mouse {
 		this.scroll = 0;
 		this.pressed = false;
 		this.recentlyPressed = false;
+		this.startedMobile = false;
 		window.addEventListener("mousemove", (event) => this.eventCall(event));
 		canvas.addEventListener("click", (event) => this.eventCall(event));
 		canvas.addEventListener("mousedown", (event) => {
@@ -211,9 +212,10 @@ export class Mouse {
 			this.scroll += event.deltaY;
 		})
 		canvas.addEventListener("touchstart", (event) => {
-			this.pressed = true;
-			this.recentlyPressed = true;
 			this.tapCall(event);
+			this.pressed = true;
+			this.startedMobile = true;
+			this.recentlyPressed = true;
 		});
 		canvas.addEventListener("touchend", (event) => {
 			this.pressed = false;
@@ -225,6 +227,7 @@ export class Mouse {
 	}
 	update() {
 		this.recentlyPressed = false;
+		this.startedMobile = false;
 	}
 	eventCall(event) {
 		if (this.graph == null) return;
@@ -234,10 +237,12 @@ export class Mouse {
 		this.y = this.graph.convBackFromSY(this.screenY);
 	}
 	tapCall(event) {
-		let ux = (event.touches[0].pageX - this.canvas.getBoundingClientRect().left) / this.canvas.width;
-		let uy = (event.touches[0].pageY - this.canvas.getBoundingClientRect().top) / this.canvas.height;
-		this.x = this.graph.convBackFromSX(ux);
-		this.y = this.graph.convBackFromSY(uy);
+		if (this.graph == null) return;
+		let point = event.touches[event.touches.length - 1];
+		this.screenX = (point.clientX - this.canvas.getBoundingClientRect().left);
+		this.screenY = (point.clientY - this.canvas.getBoundingClientRect().top);
+		this.x = this.graph.convBackFromSX(this.screenX);
+		this.y = this.graph.convBackFromSY(this.screenY);
 		
 	}
 	wasRecentlyPressed() {

@@ -153,6 +153,10 @@ class Render extends Renderer {
         let scroll = this.mouse.scroll;
         let dx = this.lastMouseX - newMouseX;
         let dy = this.lastMouseY - newMouseY;
+        if (this.mouse.startedMobile) {
+            dx = 0;
+            dy = 0;
+        }
 
         if (this.mouse.recentlyPressed) {
             let targetFound = false;
