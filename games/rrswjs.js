@@ -134,6 +134,10 @@ export class Graph {
 		this.ctx.fillText(text, this.convSX(x), this.convSY(y));
 	}
 
+	drawImage(img, x, y, scale) {
+		this.ctx.drawImage(img, this.convSX(x), this.convSY(y), this.convSW(img.width / scale), this.convSH(img.height / scale));
+	}
+
 	convSX(x) {
 		return (x * this.zoom + this.canvas.width / 2) - this.camX;
 	}

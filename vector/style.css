@@ -24,6 +24,10 @@ html, body {
     margin-top: 5px;
 }
 
+.toolbox br {
+    margin-bottom: 6px;
+}
+
 .toolbox .info {
     background-color:lightgray;
     border-radius: 4px;

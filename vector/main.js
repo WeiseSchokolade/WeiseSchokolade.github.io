@@ -1,9 +1,14 @@
 import { Renderer, RRSWJS } from "../games/rrswjs.js";
 import { Vector } from "./physics.js";
 
-const addButton = document.getElementById("addButton");
+const cameraHomeButton = document.getElementById("cameraHomeButton");
 const wipeButton = document.getElementById("wipeButton");
+const imageSelector = document.getElementById("imageSelect");
+const uploadImageInput = document.getElementById("uploadImageInput");
+const addButton = document.getElementById("addButton");
 const vectorInfo = document.getElementById("vectorInfo");
+const removeSelectedButton = document.getElementById("removeSelectedButton");
+const showCosysInput = document.getElementById("showCosysInput");
 const infoContainer = document.getElementById("infoContainer");
 const canvasContainer = document.getElementById("canvasContainer");
 const canvas = document.getElementById("canvas");
@@ -16,6 +21,29 @@ function randomColor() {
     }
     let randomIndex = Math.floor(Math.random() * unusedColors.length);
     return unusedColors.splice(randomIndex, 1)[0];
+}
+
+function setCookie(name, value, daysToLive) {
+	const date = new Date()
+	date.setTime(date.getTime() + daysToLive * 24 * 60 * 60 * 1000)
+	let expires = "expires=" + date.toUTCString() + ";"
+	document.cookie = `${name}=${value}; ${expires}; path=/; SameSite=Strict`
+}
+
+function deleteCookie(name) {
+	setCookie(name, null, null)
+}
+
+function getCookie(name) {
+	const cDecoded = decodeURIComponent(document.cookie)
+	const cArray = cDecoded.split("; ")
+	let result = null
+	cArray.forEach(element => {
+		if (element.indexOf(name) == 0) {
+			result = element.substring(name.length + 1)
+		}
+	})
+	return result
 }
 
 function resize() {
@@ -123,6 +151,7 @@ class Render extends Renderer {
         this.movingVectorTop = false;
         this.movingVectorEnd = false;
         this.draggingCamera = false;
+        this.image = null;
         this.vectors = [];
         this.movingVector = null;
         this.useTime = 0;
@@ -138,13 +167,35 @@ class Render extends Renderer {
         this.camera.x = 0;
         this.camera.y = 0;
 
-        addButton.onclick = () => {
-            this.vectors.push(new VectorVisual(new Vector(0, 0), new Vector(1, 1)));
+        cameraHomeButton.onclick = () => {
+            this.camera.x = 0;
+            this.camera.y = 0;
+            this.camera.zoom = 50;
         }
         wipeButton.onclick = () => {
             this.vectors = [];
             this.setMovingVector(null);
         }
+        imageSelector.onchange = () => {
+            this.selectImage(imageSelector.value);
+        }
+        uploadImageInput.onchange = () => {
+            loadSelectedImage();
+        }
+        addButton.onclick = () => {
+            let newVec = new VectorVisual(new Vector(0, 0), new Vector(1, 1));
+            this.vectors.push(newVec);
+            this.setMovingVector(newVec);
+        }
+        removeSelectedButton.onclick = () => {
+            this.movingVector.removed = true;
+        }
+        showCosysInput.onclick = () => {
+            rrs.renderCosys = showCosysInput.checked;
+        }
+        rrs.renderCosys = showCosysInput.checked;
+        
+        this.loadData();
     }
 
     draw(graph, deltaTime) {
@@ -156,6 +207,16 @@ class Render extends Renderer {
         if (this.mouse.startedMobile) {
             dx = 0;
             dy = 0;
+        }
+
+        for (let i = 0; i < this.vectors.length; i++) {
+            if (this.vectors[i].removed) {
+                this.vectors.splice(i, 1);
+                i--;
+            }
+        }
+        if (this.movingVector != null && this.movingVector.removed) {
+            this.setMovingVector(null);
         }
 
         if (this.mouse.recentlyPressed) {
@@ -245,6 +306,13 @@ class Render extends Renderer {
             this.updateInfo(this.movingVector);
             this.oldMovingVector = this.movingVector.copy();
         }
+
+        this.saveData();
+
+        // Draw
+        if (this.image) {
+            graph.drawImage(this.image, 0, 0, 100);
+        }
         
         this.vectors.forEach((vector) => {
             vector.draw(graph);
@@ -258,11 +326,13 @@ class Render extends Renderer {
         if (vector == null) {
             if (this.vectorInfoVisible) {
                 vectorInfo.style.visibility = "hidden";
+                removeSelectedButton.setAttribute("disabled", "disabled");
                 this.vectorInfoVisible = false;
             }
         } else {
             if (!this.vectorInfoVisible) {
                 vectorInfo.style.visibility = "visible";
+                removeSelectedButton.removeAttribute("disabled");
                 this.vectorInfoVisible = true;
             }
             vector.selected = true;
@@ -282,7 +352,7 @@ class Render extends Renderer {
         for (let i = 0; i < info.length; i += 2) {
             result += "<div>" +
                       info[i] +
-                      info[i + 1]
+                      info[i + 1] + 
                       "</div>"
                       ;
         }
@@ -291,6 +361,61 @@ class Render extends Renderer {
         }
     }
 
+    selectImage(value) {
+        switch (value) {
+            case "none":
+                this.image = null;
+                uploadImageInput.setAttribute("disabled", "disabled");
+                //uploadImageInput.style.display = "none";
+                break;
+            case "custom":
+                //uploadImageInput.style.display = "block";
+                uploadImageInput.removeAttribute("disabled");
+                this.loadSelectedImage();
+                break;
+            case "looping":
+                uploadImageInput.setAttribute("disabled", "disabled");
+                //uploadImageInput.style.display = "none";
+                this.image = new Image();
+                this.image.src = "./assets/looping.svg";
+                break;
+        }
+        imageSelector.value = value;
+    }
+
+    loadSelectedImage() {
+        if (uploadImageInput.files[0] == null) return;
+        const fileReader = new FileReader();
+        fileReader.onload = (event) => {
+            const img = new Image();
+            img.onload = () => {
+                this.image = img;
+            }
+            img.src = event.target.result;
+        }
+        fileReader.readAsDataURL(uploadImageInput.files[0])
+    }
+
+    saveData() {
+        const data = {
+            camX: this.camera.x,
+            camY: this.camera.y,
+            selectedImage: imageSelector.value
+        };
+        const jsonString = JSON.stringify(data);
+        if (this.dataString == jsonString) return;
+
+        setCookie("data", (jsonString), 365);
+        this.dataString = jsonString;
+    }
+
+    loadData() {
+        const jsonString = getCookie("data");
+        const data = JSON.parse(jsonString);
+        this.camera.x = data.camX;
+        this.camera.y = data.camY;
+        this.selectImage(data.selectedImage);
+    }
 }
 
 new RRSWJS(canvas, new Render(), true);

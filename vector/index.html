@@ -9,11 +9,28 @@
 <body>
     <div class="container">
         <div class="toolbox">
-            <button class="item" id="addButton">Add Vector</button>
+            <button class="item" id="cameraHomeButton">Camera Home</button>
             <button class="item" id="wipeButton">Remove All Vectors</button>
+            <br class="item">
+            <button class="item" id="addButton">Add Vector</button>
+            <button class="item" id="removeSelectedButton">Remove Selected Vector</button>
             <div class="item info" id="infoContainer">
                 <div id="vectorInfo">
                 </div>
+            </div>
+            <br class="item">
+            <div class="item">
+                <span>Image: </span>
+                <select id="imageSelect">
+                    <option value="none">None</option>
+                    <option value="custom">Upload</option>
+                    <option value="looping">Looping</option>
+                </select>
+            </div>
+            <input class="item" type="file" id="uploadImageInput" accept="image/*"/>
+            <div class="item">
+                <span>Show Coordinate System</span>
+                <input id="showCosysInput" type="checkbox" checked="true"/>
             </div>
         </div>
         <div id="canvasContainer" class="canvasContainer">
