@@ -411,6 +411,12 @@ class Render extends Renderer {
 
     loadData() {
         const jsonString = getCookie("data");
+        if (jsonString == null) {
+            this.camera.x = 0;
+            this.camera.y = 0;
+            this.selectImage("none");
+            return;
+        }
         const data = JSON.parse(jsonString);
         this.camera.x = data.camX;
         this.camera.y = data.camY;
