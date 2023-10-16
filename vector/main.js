@@ -180,7 +180,7 @@ class Render extends Renderer {
             this.selectImage(imageSelector.value);
         }
         uploadImageInput.onchange = () => {
-            loadSelectedImage();
+            this.loadSelectedImage();
         }
         addButton.onclick = () => {
             let newVec = new VectorVisual(new Vector(0, 0), new Vector(1, 1));
