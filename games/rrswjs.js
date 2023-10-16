@@ -108,6 +108,44 @@ export class Graph {
 		this.ctx.fill();
 	}
 
+	drawTriangle(x0, y0, x1, y1, x2, y2, color) {
+		this.ctx.strokeStyle = color;
+		this.ctx.beginPath();
+		let triangle = {
+			x0: this.convSX(x0),
+			y0: this.convSY(y0),
+			x1: this.convSX(x1),
+			y1: this.convSY(y1),
+			x2: this.convSX(x2),
+			y2: this.convSY(y2)
+		}
+		this.ctx.moveTo(triangle.x0, triangle.y0);
+		this.ctx.lineTo(triangle.x1, triangle.y1);
+		this.ctx.lineTo(triangle.x2, triangle.y2);
+		this.ctx.lineTo(triangle.x0, triangle.y0);
+		this.ctx.closePath();
+		this.ctx.stroke();
+	}
+
+	fillTriangle(x0, y0, x1, y1, x2, y2, color) {
+		this.ctx.fillStyle = color;
+		this.ctx.beginPath();
+		let triangle = {
+			x0: this.convSX(x0),
+			y0: this.convSY(y0),
+			x1: this.convSX(x1),
+			y1: this.convSY(y1),
+			x2: this.convSX(x2),
+			y2: this.convSY(y2)
+		}
+		this.ctx.moveTo(triangle.x0, triangle.y0);
+		this.ctx.lineTo(triangle.x1, triangle.y1);
+		this.ctx.lineTo(triangle.x2, triangle.y2);
+		this.ctx.lineTo(triangle.x0, triangle.y0);
+		this.ctx.closePath();
+		this.ctx.fill();
+	}
+
 	drawPoint(x, y) {
 		this.drawPoint(x, y, "black");
 	}
@@ -247,7 +285,6 @@ export class Mouse {
 		this.screenY = (point.clientY - this.canvas.getBoundingClientRect().top);
 		this.x = this.graph.convBackFromSX(this.screenX);
 		this.y = this.graph.convBackFromSY(this.screenY);
-		
 	}
 	wasRecentlyPressed() {
 		return this.recentlyPressed;

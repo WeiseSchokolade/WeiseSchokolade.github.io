@@ -69,6 +69,7 @@ function isOnLine(p, l1, l2) {
 }
 
 window.addEventListener("resize", resize);
+canvas.addEventListener("resize", resize);
 resize();
 
 class VectorVisual {
@@ -93,21 +94,52 @@ class VectorVisual {
     }
 
     draw(g) {
+        let topX = this.vecTop.x - this.vector.normalise().mulScalar(0.2).x;
+        let topY = this.vecTop.y - this.vector.normalise().mulScalar(0.2).y;
 
-        let x = this.vecTop.x + this.normalisedVector.x * 0.1;
-        let y = this.vecTop.y + this.normalisedVector.y * 0.1;
+        let x = topX + this.normalisedVector.x * 0.1;
+        let y = topY + this.normalisedVector.y * 0.1;
         if (this.selected) {
-            g.drawLine(this.pos.x - this.normalisedVector.x * 0.05, this.pos.y - this.normalisedVector.y * 0.05, this.pos.x + this.vector.x, this.pos.y + this.vector.y, "white", 0.2);
+            g.drawLine(this.pos.x - this.normalisedVector.x * 0.05, this.pos.y - this.normalisedVector.y * 0.05, topX, topY, "white", 0.2);
 
-            g.drawLine(x, y, this.vecTop.x + this.leftVec.x * 1.2, this.vecTop.y + this.leftVec.y * 1.2, "white");
-            g.drawLine(x, y, this.vecTop.x + this.rightVec.x * 1.2, this.vecTop.y + this.rightVec.y * 1.2, "white");
+            g.drawLine(x, y, topX + this.leftVec.x * 1.2, topY + this.leftVec.y * 1.2, "white");
+            g.drawLine(x, y, topX + this.rightVec.x * 1.2, topY + this.rightVec.y * 1.2, "white");
+            
+		    let triangle = {
+			    x0: g.convSX(topX + this.leftVec.x * 1.2),
+			    y0: g.convSY(topY + this.leftVec.y * 1.2),
+			    x1: g.convSX(x),
+			    y1: g.convSY(y),
+			    x2: g.convSX(topX + this.rightVec.x * 1.2),
+			    y2: g.convSY(topY + this.rightVec.y * 1.2)
+		    }
+            g.ctx.beginPath();
+            
+		    g.ctx.moveTo(triangle.x0, triangle.y0);
+		    g.ctx.lineTo(triangle.x1, triangle.y1);
+		    g.ctx.lineTo(triangle.x2, triangle.y2);
+		    g.ctx.stroke();
         }
         
-        g.drawLine(this.pos.x, this.pos.y, this.pos.x + this.vector.x + this.normalisedVector.x * 0.1, this.pos.y + this.vector.y + this.normalisedVector.y * 0.1, this.color, 0.1);
+        g.drawLine(this.pos.x, this.pos.y, topX + this.normalisedVector.x * 0.1, topY + this.normalisedVector.y * 0.1, this.color, 0.1);
 
-        g.drawLine(x, y, this.vecTop.x + this.leftVec.x, this.vecTop.y + this.leftVec.y, this.color);
-        g.drawLine(x, y, this.vecTop.x + this.rightVec.x, this.vecTop.y + this.rightVec.y, this.color);
+        g.drawLine(x, y, topX + this.leftVec.x, topY + this.leftVec.y, this.color);
+        g.drawLine(x, y, topX + this.rightVec.x, topY + this.rightVec.y, this.color);
 
+		let triangle = {
+			x0: g.convSX(topX + this.leftVec.x),
+			y0: g.convSY(topY + this.leftVec.y),
+			x1: g.convSX(x),
+			y1: g.convSY(y),
+			x2: g.convSX(topX + this.rightVec.x),
+			y2: g.convSY(topY + this.rightVec.y)
+		}
+        g.ctx.beginPath();
+        
+		g.ctx.moveTo(triangle.x0, triangle.y0);
+		g.ctx.lineTo(triangle.x1, triangle.y1);
+		g.ctx.lineTo(triangle.x2, triangle.y2);
+		g.ctx.stroke();
     }
 
     topTouched(x, y, radius) {
@@ -171,28 +203,28 @@ class Render extends Renderer {
             this.camera.x = 0;
             this.camera.y = 0;
             this.camera.zoom = 50;
-        }
+        };
         wipeButton.onclick = () => {
             this.vectors = [];
             this.setMovingVector(null);
-        }
+        };
         imageSelector.onchange = () => {
             this.selectImage(imageSelector.value);
-        }
+        };
         uploadImageInput.onchange = () => {
             this.loadSelectedImage();
-        }
+        };
         addButton.onclick = () => {
             let newVec = new VectorVisual(new Vector(0, 0), new Vector(1, 1));
             this.vectors.push(newVec);
             this.setMovingVector(newVec);
-        }
+        };
         removeSelectedButton.onclick = () => {
             this.movingVector.removed = true;
-        }
+        };
         showCosysInput.onclick = () => {
             rrs.renderCosys = showCosysInput.checked;
-        }
+        };
         rrs.renderCosys = showCosysInput.checked;
         
         this.loadData();
@@ -317,6 +349,12 @@ class Render extends Renderer {
         this.vectors.forEach((vector) => {
             vector.draw(graph);
         })
+        /*
+        graph.ctx.beginPath();
+        graph.ctx.strokeStyle = "blue";
+        graph.ctx.arc(graph.convSX(this.mouse.x), graph.convSY(this.mouse.y), 1, 0, 2 * Math.PI);
+        graph.ctx.stroke();
+        */
     }
     
     setMovingVector(vector) {

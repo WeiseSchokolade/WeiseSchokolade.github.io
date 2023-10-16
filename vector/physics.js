@@ -17,7 +17,7 @@ export class Vector {
     }
 
     subtract(v) {
-        return new Vector(v.x - this.x, v.y - this.y);
+        return new Vector(this.x - v.x, this.y - v.y);
     }
 
     mulScalar(s) {
