@@ -422,6 +422,7 @@ class Render extends Renderer {
     }
 
     loadSelectedImage() {
+        this.image = null;
         if (uploadImageInput.files[0] == null) return;
         const fileReader = new FileReader();
         fileReader.onload = (event) => {
