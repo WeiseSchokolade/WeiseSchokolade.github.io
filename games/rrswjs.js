@@ -61,13 +61,16 @@ export class Graph {
 			this.ctx.moveTo(0, canvas.height / 2 - this.camY);
 			this.ctx.lineTo(canvas.width, canvas.height / 2 - this.camY);
 			this.ctx.stroke();
-			for (let i = -10; i < 10; i++) {
-				if (i == 0) continue;
-				this.drawLine(i, 0.1, i, -0.1, "red");
+
+			for (let i = Math.floor(-this.convBackFromSW(this.canvas.width)); i < this.convBackFromSW(this.canvas.width); i++) {
+				let x = i + Math.floor(this.camera.x);
+				if (x == 0) continue;
+				this.drawLine(x, 0.1, x, -0.1, "red");
 			}
-			for (let i = -10; i < 10; i++) {
-				if (i == 0) continue;
-				this.drawLine(0.1, i, -0.1, i, "blue");
+			for (let i = Math.floor(-this.convBackFromSH(this.canvas.height)); i < this.convBackFromSH(this.canvas.height); i++) {
+				let y = i + Math.floor(this.camera.y);
+				if (y == 0) continue;
+				this.drawLine(0.1, y, -0.1, y, "blue");
 			}
 		}
 	}
