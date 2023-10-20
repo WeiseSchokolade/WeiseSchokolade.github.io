@@ -1,6 +1,7 @@
 import { Renderer, RRSWJS } from "../games/rrswjs.js";
 import { Vector } from "./physics.js";
 
+const body = document.body;
 const toolbox = document.getElementById("toolbox");
 const cameraHomeButton = document.getElementById("cameraHomeButton");
 const wipeButton = document.getElementById("wipeButton");
@@ -13,6 +14,7 @@ const vectorColorInput = document.getElementById("vectorColorInput");
 const vectorLabelInput = document.getElementById("vectorLabelInput");
 const removeSelectedButton = document.getElementById("removeSelectedButton");
 const showCosysInput = document.getElementById("showCosysInput");
+const darkModeInput = document.getElementById("darkModeInput");
 const showToolsInputBox = document.getElementById("showToolsInputBox");
 const showToolsInput = document.getElementById("showToolsInput");
 const hideToolsInput = document.getElementById("hideToolsInput");
@@ -207,6 +209,7 @@ class Render extends Renderer {
     }
 
     load(rrs) {
+        this.rrs = rrs;
         this.mouse = rrs.mouse;
         this.camera = rrs.camera;
         this.camera.x = 0;
@@ -285,6 +288,17 @@ class Render extends Renderer {
                 fileReader.readAsDataURL(file)
             }
         });
+        function updateDarkMode() {
+            body.classList.toggle("darkmode");
+            body.classList.toggle("lightmode");
+            /*if (darkModeInput.checked) {
+            } else {
+                body.classList.toggle("lightmode");
+                body.classList.toggle("darkmode");
+            }*/
+        }
+        darkModeInput.onclick = updateDarkMode;
+        updateDarkMode();
 
         this.loadData();
     }
@@ -409,7 +423,8 @@ class Render extends Renderer {
         
         this.vectors.forEach((vector) => {
             vector.draw(graph);
-        })
+        });
+
         /*
         graph.ctx.beginPath();
         graph.ctx.strokeStyle = "blue";

@@ -4,6 +4,24 @@ html, body {
     overflow: hidden;
 }
 
+:root {
+    --background-color: #fff;
+    --toolbox-item-background: #fff;
+    --text-color: #fff;
+}
+
+.lightmode {
+    --background-color: #e2e2e2;
+    --toolbox-item-background: #f5f5f5;
+    --text-color: #000;
+}
+
+.darkmode {
+    --background-color: #242424;
+    --toolbox-item-background: #313131;
+    --text-color: #fff;
+}
+
 .container {
     height: 100%;
 }
@@ -35,15 +53,17 @@ html, body {
     height: max-content;
     margin-left: 10px;
     margin-top: 10px;
-    background-color: whitesmoke;
+    padding: 3px;
+    background-color: var(--toolbox-item-background);
     border: solid 2px black;
     border-radius: 7px;
-    padding: 3px;
     list-style: none;
     align-items: center;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: var(--text-color);
     vertical-align: super;
     user-select: none;
+    transition: background-color 0.5s ease, color 0.3s ease;
 }
 
 .toolbox .toolboxItem li {
@@ -68,5 +88,6 @@ html, body {
 .contentCanvas {
     width: 100%;
     height: 100%;
-    background-color: rgb(226, 226, 226);
+    background-color: var(--background-color);
+    transition: background-color 0.5s ease;
 }
