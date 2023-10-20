@@ -1,6 +1,7 @@
 export class RRSWJS {
 	constructor(canvas, renderer, renderCosys) {
 		this.canvas = canvas;
+		this.context = canvas.getContext("2d")
 		this.renderer = renderer;
 		this.renderCosys = renderCosys;
 		this.camera = new Camera(0, 0, 50);
@@ -15,7 +16,7 @@ export class RRSWJS {
 	frame(timestamp) {
 		let deltaTime = timestamp - this.lastTimeStamp;
 		this.lastTimeStamp = timestamp;
-		let g = new Graph(this.canvas, this.camera, this.renderCosys);
+		let g = new Graph(this.canvas, this.context, this.camera, this.renderCosys);
 		this.mouse.graph = g;
 		this.renderer.draw(g, deltaTime);
 		this.mouse.update();
@@ -38,9 +39,9 @@ export class Renderer {
 }
 
 export class Graph {
-	constructor(canvas, camera, renderCosys) {
+	constructor(canvas, context, camera, renderCosys) {
 		this.canvas = canvas;
-		this.ctx = canvas.getContext("2d");
+		this.ctx = context;
 		this.camera = camera;
 		this.zoom = camera.zoom;
 		this.camX = camera.x * this.zoom;
