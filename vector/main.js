@@ -7,7 +7,10 @@ const wipeButton = document.getElementById("wipeButton");
 const imageSelector = document.getElementById("imageSelect");
 const uploadImageInput = document.getElementById("uploadImageInput");
 const addButton = document.getElementById("addButton");
+const vectorInfoBox = document.getElementById("vectorInfoBox");
 const vectorInfo = document.getElementById("vectorInfo");
+const vectorColorInput = document.getElementById("vectorColorInput");
+const vectorLabelInput = document.getElementById("vectorLabelInput");
 const removeSelectedButton = document.getElementById("removeSelectedButton");
 const showCosysInput = document.getElementById("showCosysInput");
 const showToolsInputBox = document.getElementById("showToolsInputBox");
@@ -17,7 +20,7 @@ const infoContainer = document.getElementById("infoContainer");
 const canvasContainer = document.getElementById("canvasContainer");
 const canvas = document.getElementById("canvas");
 
-const colors = ["green", "darkred", "gold", "lime", "limeGreen", "tomato", "yellowgreen", "steelblue", "slateblue", "silver", "powderblue"];
+const colors = ["#008000", "#8b0000", "#ffd700", "#00ff00", "#32cd32", "#ff6347", "#9acd32", "#4682b4", "#6a5acd", "#c0c0c0", "#b0e0e6"];
 let unusedColors = [...colors];
 function randomColor() {
     if (unusedColors.length == 0) {
@@ -80,6 +83,7 @@ class VectorVisual {
     constructor(pos, vector, color) {
         this.pos = pos;
         this.vector = vector;
+        this.label = "";
         this.recalculate();
         this.color = color || randomColor();
         this.selected = false;
@@ -144,6 +148,10 @@ class VectorVisual {
 		g.ctx.lineTo(triangle.x1, triangle.y1);
 		g.ctx.lineTo(triangle.x2, triangle.y2);
 		g.ctx.stroke();
+        if (this.label) {
+            g.ctx.font = "" + (g.camera.zoom * 0.3) + "px Verdana";
+            g.drawText(this.label, this.vecTop.x + this.vector.normalise().x * 0.1, this.vecTop.y + this.vector.normalise().y * 0.1);
+        }
     }
 
     topTouched(x, y, radius) {
@@ -242,6 +250,22 @@ class Render extends Renderer {
             toolbox.style.display = "flex";
             showToolsInputBox.style.visibility = "hidden";
         }
+        vectorColorInput.onchange = () => {
+            if (this.movingVector) {
+                this.movingVector.color = vectorColorInput.value;
+            }
+        }
+        vectorLabelInput.value = "";
+        vectorLabelInput.oninput = () => {
+            if (this.movingVector) {
+                this.movingVector.label = vectorLabelInput.value;
+            }
+        }
+        vectorLabelInput.onkeyup = (event) => {
+            if (event.code == "Enter") {
+                vectorLabelInput.blur();
+            }
+        }
         
 
         this.loadData();
@@ -271,7 +295,7 @@ class Render extends Renderer {
         if (this.mouse.recentlyPressed) {
             let targetFound = false;
 
-            for (let i = 0; i < this.vectors.length; i++) {
+            for (let i = this.vectors.length - 1; i >= 0; i--) {
                 let vector = this.vectors[i];
                 if (vector.topTouched(this.mouse.x, this.mouse.y, 0.3)) {
                     this.setMovingVector(vector);
@@ -380,17 +404,19 @@ class Render extends Renderer {
         }
         if (vector == null) {
             if (this.vectorInfoVisible) {
-                vectorInfo.style.visibility = "hidden";
+                vectorInfoBox.style.visibility = "hidden";
                 removeSelectedButton.setAttribute("disabled", "disabled");
                 this.vectorInfoVisible = false;
             }
         } else {
             if (!this.vectorInfoVisible) {
-                vectorInfo.style.visibility = "visible";
+                vectorInfoBox.style.visibility = "visible";
                 removeSelectedButton.removeAttribute("disabled");
                 this.vectorInfoVisible = true;
             }
             vector.selected = true;
+            vectorColorInput.value = vector.color;
+            vectorLabelInput.value = vector.label;
             if (this.vectors.includes(vector)) {
                 this.vectors.push(this.vectors.splice(this.vectors.indexOf(vector), 1)[0]);
             }

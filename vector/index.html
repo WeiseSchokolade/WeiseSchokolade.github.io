@@ -23,8 +23,18 @@
                     <li><button id="cameraHomeButton">Home</button></li>
                 </ul>
                 <div class="toolboxItem info" style="min-width: 200px;" id="infoContainer">
-                    <div id="vectorInfo">
-                    </div>
+                    <ul id="vectorInfoBox" class="vectorInfoBox">
+                        <li id="vectorInfo">
+                        </li>
+                        <li>
+                            <label for="vectorColorPicker">Color:</label>
+                            <input type="color" id="vectorColorInput"/>
+                        </li>
+                        <li>
+                            <label for="vectorLabelInput">Label:</label>
+                            <input type="text" id="vectorLabelInput"/>
+                        </li>
+                    </ul>
                 </div>
                 <ul class="toolboxItem">
                     <li><span>Image: </span>
@@ -37,7 +47,7 @@
                 </ul>
                 <ul class="toolboxItem">
                     <li>
-                        <label for="showCosysInput">Show Coordinate System</label>
+                        <label for="showCosysInput">Show Coordinate System:</label>
                         <input id="showCosysInput" type="checkbox" checked="true" />
                     </li>
                     <li>
