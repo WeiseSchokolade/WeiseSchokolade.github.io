@@ -291,11 +291,10 @@ class Render extends Renderer {
         darkModeInput.onclick = () => {
             body.classList.toggle("darkmode");
             body.classList.toggle("lightmode");
-            /*if (darkModeInput.checked) {
-            } else {
-                body.classList.toggle("lightmode");
-                body.classList.toggle("darkmode");
-            }*/
+        }
+        if (darkModeInput.checked) {
+            body.classList.toggle("darkmode");
+            body.classList.toggle("lightmode");
         }
         
         this.loadData();
