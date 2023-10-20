@@ -391,6 +391,9 @@ class Render extends Renderer {
                 this.vectorInfoVisible = true;
             }
             vector.selected = true;
+            if (this.vectors.includes(vector)) {
+                this.vectors.push(this.vectors.splice(this.vectors.indexOf(vector), 1)[0]);
+            }
         }
         this.movingVector = vector;
     }
