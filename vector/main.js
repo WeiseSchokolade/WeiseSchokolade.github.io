@@ -199,6 +199,7 @@ class Render extends Renderer {
         this.vectors = [];
         this.movingVector = null;
         this.useTime = 0;
+        this.toolsLocked = false;
         this.vectorInfoVisible = true;
         this.oldMovingVector = new VectorVisual(new Vector(0, 1), new Vector(1, 0));
         this.updateInfo(new VectorVisual(new Vector(0, 0), new Vector(1, 1)));
@@ -239,16 +240,15 @@ class Render extends Renderer {
         };
         rrs.renderCosys = showCosysInput.checked;
         hideToolsInput.onclick = () => {
-            hideToolsInput.checked = false;
-            showToolsInput.checked = true;
             toolbox.style.display = "none";
             showToolsInputBox.style.visibility = "visible";
+            this.toolsLocked = true;
+            this.setMovingVector(null);
         }
         showToolsInput.onclick = () => {
-            hideToolsInput.checked = true;
-            showToolsInput.checked = false;
             toolbox.style.display = "flex";
             showToolsInputBox.style.visibility = "hidden";
+            this.toolsLocked = false;
         }
         vectorColorInput.onchange = () => {
             if (this.movingVector) {
@@ -267,6 +267,7 @@ class Render extends Renderer {
             }
         }
         document.addEventListener("paste", (event) => {
+            if (this.toolsLocked) return;
             let content = event.clipboardData.items[0];
             if (content.type.indexOf("image") === 0) {
                 uploadImageInput.value = '';
@@ -312,25 +313,27 @@ class Render extends Renderer {
         if (this.mouse.recentlyPressed) {
             let targetFound = false;
 
-            for (let i = this.vectors.length - 1; i >= 0; i--) {
-                let vector = this.vectors[i];
-                if (vector.topTouched(this.mouse.x, this.mouse.y, 0.3)) {
-                    this.setMovingVector(vector);
-                    targetFound = true;
-                    this.movingVectorTop = true;
-                    break;
-                }
-                if (vector.endTouched(this.mouse.x, this.mouse.y, 0.3)) {
-                    this.setMovingVector(vector);
-                    targetFound = true;
-                    this.movingVectorEnd = true;
-                    break;
-                }
-                if (vector.touched(this.mouse.x, this.mouse.y, 0.1)) {
-                    this.setMovingVector(vector);
-                    targetFound = true;
-                    this.movingVectorPos = true;
-                    break;
+            if (!this.toolsLocked) {
+                for (let i = this.vectors.length - 1; i >= 0; i--) {
+                    let vector = this.vectors[i];
+                    if (vector.topTouched(this.mouse.x, this.mouse.y, 0.3)) {
+                        this.setMovingVector(vector);
+                        targetFound = true;
+                        this.movingVectorTop = true;
+                        break;
+                    }
+                    if (vector.endTouched(this.mouse.x, this.mouse.y, 0.3)) {
+                        this.setMovingVector(vector);
+                        targetFound = true;
+                        this.movingVectorEnd = true;
+                        break;
+                    }
+                    if (vector.touched(this.mouse.x, this.mouse.y, 0.1)) {
+                        this.setMovingVector(vector);
+                        targetFound = true;
+                        this.movingVectorPos = true;
+                        break;
+                    }
                 }
             }
 
