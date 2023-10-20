@@ -11,22 +11,22 @@
 <body>
     <div class="container">
         <div class="toolcontainer">
-            <div class="toolbox">
-                <ul class="item">
+            <div class="toolbox" id="toolbox">
+                <ul class="toolboxItem">
                     <li>Management</li>
                     <li><button id="addButton">Add Vector</button></li>
                     <li><button id="removeSelectedButton">Remove Selected Vector</button></li>
                     <li><button id="wipeButton">Remove All Vectors</button></li>
                 </ul>
-                <ul class="item">
+                <ul class="toolboxItem">
                     <li>Cam</li>
                     <li><button id="cameraHomeButton">Home</button></li>
                 </ul>
-                <div class="item info" style="min-width: 200px;" id="infoContainer">
+                <div class="toolboxItem info" style="min-width: 200px;" id="infoContainer">
                     <div id="vectorInfo">
                     </div>
                 </div>
-                <ul class="item">
+                <ul class="toolboxItem">
                     <li><span>Image: </span>
                     <select id="imageSelect">
                         <option value="none">None</option>
@@ -35,13 +35,21 @@
                     </select></li>
                     <li><input type="file" id="uploadImageInput" accept="image/*"/></li>
                 </ul>
-                <ul class="item">
+                <ul class="toolboxItem">
                     <li>
                         <label for="showCosysInput">Show Coordinate System</label>
                         <input id="showCosysInput" type="checkbox" checked="true" />
                     </li>
+                    <li>
+                        <button id="hideToolsInput">Hide Toolbox</label>
+                    </li>
                 </ul>
             </div>
+            <ul id="showToolsInputBox" class="toolboxItem" style="visibility: hidden">
+                <li>
+                    <button id="showToolsInput">Show Toolbox</button>
+                </li>
+            </ul>
         </div>
         <div id="canvasContainer" class="canvasContainer">
             <canvas id="canvas" class="contentCanvas"></canvas>

@@ -1,6 +1,7 @@
 import { Renderer, RRSWJS } from "../games/rrswjs.js";
 import { Vector } from "./physics.js";
 
+const toolbox = document.getElementById("toolbox");
 const cameraHomeButton = document.getElementById("cameraHomeButton");
 const wipeButton = document.getElementById("wipeButton");
 const imageSelector = document.getElementById("imageSelect");
@@ -9,6 +10,9 @@ const addButton = document.getElementById("addButton");
 const vectorInfo = document.getElementById("vectorInfo");
 const removeSelectedButton = document.getElementById("removeSelectedButton");
 const showCosysInput = document.getElementById("showCosysInput");
+const showToolsInputBox = document.getElementById("showToolsInputBox");
+const showToolsInput = document.getElementById("showToolsInput");
+const hideToolsInput = document.getElementById("hideToolsInput");
 const infoContainer = document.getElementById("infoContainer");
 const canvasContainer = document.getElementById("canvasContainer");
 const canvas = document.getElementById("canvas");
@@ -226,7 +230,20 @@ class Render extends Renderer {
             rrs.renderCosys = showCosysInput.checked;
         };
         rrs.renderCosys = showCosysInput.checked;
+        hideToolsInput.onclick = () => {
+            hideToolsInput.checked = false;
+            showToolsInput.checked = true;
+            toolbox.style.display = "none";
+            showToolsInputBox.style.visibility = "visible";
+        }
+        showToolsInput.onclick = () => {
+            hideToolsInput.checked = true;
+            showToolsInput.checked = false;
+            toolbox.style.display = "flex";
+            showToolsInputBox.style.visibility = "hidden";
+        }
         
+
         this.loadData();
     }
 

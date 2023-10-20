@@ -10,7 +10,8 @@ html, body {
 
 .toolcontainer {
     position: absolute;
-    width: fit-content
+    width: fit-content;
+    pointer-events: none;
 }
 
 .toolbox {
@@ -22,7 +23,8 @@ html, body {
     align-content: baseline;
 }
 
-.toolbox .item {
+.toolboxItem {
+    pointer-events: all;
     width: max-content;
     height: max-content;
     margin-left: 10px;
@@ -37,7 +39,7 @@ html, body {
     user-select: none;
 }
 
-.toolbox .item li {
+.toolbox .toolboxItem li {
     padding: 3px 2px 3px 2px;
 }
 
