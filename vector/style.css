@@ -25,7 +25,8 @@ html, body {
 .toolbox .item {
     width: max-content;
     height: max-content;
-    margin: 10px;
+    margin-left: 10px;
+    margin-top: 10px;
     background-color: whitesmoke;
     border: solid 2px black;
     border-radius: 7px;
