@@ -266,7 +266,24 @@ class Render extends Renderer {
                 vectorLabelInput.blur();
             }
         }
-        
+        document.addEventListener("paste", (event) => {
+            let content = event.clipboardData.items[0];
+            if (content.type.indexOf("image") === 0) {
+                uploadImageInput.value = '';
+                this.selectImage("custom");
+                this.image = null;
+                let file = content.getAsFile();
+                const fileReader = new FileReader();
+                fileReader.onload = (event) => {
+                    let image = new Image();
+                    image.onload = () => {
+                        this.image = image;
+                    }
+                    image.src = event.target.result;
+                }
+                fileReader.readAsDataURL(file)
+            }
+        });
 
         this.loadData();
     }
@@ -449,20 +466,22 @@ class Render extends Renderer {
         switch (value) {
             case "none":
                 this.image = null;
-                uploadImageInput.setAttribute("disabled", "disabled");
-                //uploadImageInput.style.display = "none";
+                //uploadImageInput.setAttribute("disabled", "disabled");
+                uploadImageInput.style.display = "none";
                 break;
             case "custom":
-                //uploadImageInput.style.display = "block";
-                uploadImageInput.removeAttribute("disabled");
+                uploadImageInput.style.display = "block";
+                //uploadImageInput.removeAttribute("disabled");
                 this.loadSelectedImage();
                 break;
             case "looping":
-                uploadImageInput.setAttribute("disabled", "disabled");
-                //uploadImageInput.style.display = "none";
+                //uploadImageInput.setAttribute("disabled", "disabled");
+                uploadImageInput.style.display = "none";
                 this.image = new Image();
                 this.image.src = "./assets/looping.svg";
                 break;
+            default:
+                console.log("Unknown type: " + value);
         }
         imageSelector.value = value;
     }
