@@ -288,7 +288,7 @@ class Render extends Renderer {
                 fileReader.readAsDataURL(file)
             }
         });
-        function updateDarkMode() {
+        darkModeInput.onclick = () => {
             body.classList.toggle("darkmode");
             body.classList.toggle("lightmode");
             /*if (darkModeInput.checked) {
@@ -297,9 +297,7 @@ class Render extends Renderer {
                 body.classList.toggle("darkmode");
             }*/
         }
-        darkModeInput.onclick = updateDarkMode;
-        updateDarkMode();
-
+        
         this.loadData();
     }
 
