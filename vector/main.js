@@ -8,6 +8,8 @@ const wipeButton = document.getElementById("wipeButton");
 const duplicateButton = document.getElementById("duplicateButton");
 const turnLeftButton = document.getElementById("turnLeftButton");
 const turnRightButton = document.getElementById("turnRightButton");
+const undoButton = document.getElementById("undoButton");
+const redoButton = document.getElementById("redoButton");
 const imageSelector = document.getElementById("imageSelect");
 const uploadImageInput = document.getElementById("uploadImageInput");
 const addButton = document.getElementById("addButton");
@@ -202,6 +204,8 @@ class Render extends Renderer {
         this.draggingCamera = false;
         this.image = null;
         this.vectors = [];
+        this.states = [];
+        this.stateIndex = 0;
         this.movingVector = null;
         this.useTime = 0;
         this.toolsLocked = false;
@@ -226,6 +230,7 @@ class Render extends Renderer {
         wipeButton.onclick = () => {
             this.vectors = [];
             this.setMovingVector(null);
+            this.saveState();
         };
         duplicateButton.onclick = () => {
             let newVec = this.movingVector.copy();
@@ -233,14 +238,35 @@ class Render extends Renderer {
             newVec.recalculate();
             this.vectors.push(newVec);
             this.setMovingVector(newVec);
+            this.saveState();
         };
         turnLeftButton.onclick = () => {
             this.movingVector.vector = this.movingVector.vector.rotate(Math.PI * 0.5);
             this.movingVector.recalculate();
+            this.saveState();
         }
         turnRightButton.onclick = () => {
             this.movingVector.vector = this.movingVector.vector.rotate(Math.PI * -0.5);
             this.movingVector.recalculate();
+            this.saveState();
+        }
+        undoButton.onclick = () => {
+            this.stateIndex--;
+            if (this.stateIndex < 0) {
+                this.stateIndex++;
+                return;
+            }
+            this.setMovingVector(null);
+            this.vectors = this.copyArray(this.states[this.stateIndex]);
+        }
+        redoButton.onclick = () => {
+            this.stateIndex++;
+            if (this.stateIndex >= this.states.length) {
+                this.stateIndex--;
+                return;
+            }
+            this.setMovingVector(null);
+            this.vectors = this.copyArray(this.states[this.stateIndex]);
         }
         imageSelector.onchange = () => {
             this.selectImage(imageSelector.value);
@@ -252,9 +278,11 @@ class Render extends Renderer {
             let newVec = new VectorVisual(new Vector(0, 0), new Vector(1, 1));
             this.vectors.push(newVec);
             this.setMovingVector(newVec);
+            this.saveState();
         };
         removeSelectedButton.onclick = () => {
             this.movingVector.removed = true;
+            this.saveState();
         };
         showCosysInput.onclick = () => {
             rrs.renderCosys = showCosysInput.checked;
@@ -274,12 +302,14 @@ class Render extends Renderer {
         vectorColorInput.onchange = () => {
             if (this.movingVector) {
                 this.movingVector.color = vectorColorInput.value;
+                this.saveState();
             }
         }
         vectorLabelInput.value = "";
         vectorLabelInput.oninput = () => {
             if (this.movingVector) {
                 this.movingVector.label = vectorLabelInput.value;
+                this.saveState();
             }
         }
         vectorLabelInput.onkeyup = (event) => {
@@ -316,6 +346,7 @@ class Render extends Renderer {
         }
         
         this.loadData();
+        this.saveState();
     }
 
     draw(graph, deltaTime) {
@@ -373,6 +404,9 @@ class Render extends Renderer {
         if (!this.mouse.pressed) {
             if (this.useTime > 0 && this.useTime < 0.3 && this.draggingCamera) {
                 this.setMovingVector(null);
+            }
+            if (!this.draggingCamera && this.useTime > 0) {
+                this.saveState();
             }
             this.useTime = 0;
             this.draggingCamera = false;
@@ -432,6 +466,8 @@ class Render extends Renderer {
         this.saveData();
 
         // Draw
+        this.updateStateButtons();
+
         if (this.image) {
             graph.drawImage(this.image, 0, 0, 100);
         }
@@ -446,6 +482,37 @@ class Render extends Renderer {
         graph.ctx.arc(graph.convSX(this.mouse.x), graph.convSY(this.mouse.y), 1, 0, 2 * Math.PI);
         graph.ctx.stroke();
         */
+        graph.drawText("States: " + this.states.length, 0, 0)
+        graph.drawText("StateIndex: " + this.stateIndex, 0, -0.5)
+    }
+
+    updateStateButtons() {
+        if (this.states[this.stateIndex - 1]) {
+            undoButton.removeAttribute("disabled");
+        } else {
+            undoButton.setAttribute("disabled", "disabled");
+        }
+        if (this.states[this.stateIndex + 1]) {
+            redoButton.removeAttribute("disabled");
+        } else {
+            redoButton.setAttribute("disabled", "disabled");
+        }
+    }
+
+    saveState() {
+        if (this.stateIndex < this.states.length - 1) {
+            this.states.length = this.stateIndex + 1;
+        }
+        this.stateIndex = this.states.length;
+        this.states.push(this.copyArray(this.vectors));
+    }
+
+    copyArray(arr) {
+        let copy = [];
+        for (let i = 0; i < arr.length; i++) {
+            copy.push(arr[i].copy());
+        }
+        return copy;
     }
     
     setMovingVector(vector) {
@@ -547,6 +614,7 @@ class Render extends Renderer {
         const data = {
             camX: this.camera.x,
             camY: this.camera.y,
+            camZoom: this.camera.zoom,
             selectedImage: imageSelector.value
         };
         const jsonString = JSON.stringify(data);
@@ -561,12 +629,14 @@ class Render extends Renderer {
         if (jsonString == null) {
             this.camera.x = 0;
             this.camera.y = 0;
+            this.camera.zoom = 50;
             this.selectImage("none");
             return;
         }
         const data = JSON.parse(jsonString);
         this.camera.x = data.camX;
         this.camera.y = data.camY;
+        this.camera.zoom = data.camZoom;
         this.selectImage(data.selectedImage);
     }
 }
