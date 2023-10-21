@@ -608,6 +608,12 @@ class Render extends Renderer {
         fileReader.readAsDataURL(uploadImageInput.files[0])
     }
 
+    validateData() {
+        if (!this.camera.x) this.camera.x = 0;
+        if (!this.camera.y) this.camera.y = 0;
+        if (!this.camera.zoom) this.camera.zoom = 50;
+    }
+
     saveData() {
         const data = {
             camX: this.camera.x,
@@ -635,6 +641,7 @@ class Render extends Renderer {
         this.camera.x = data.camX;
         this.camera.y = data.camY;
         this.camera.zoom = data.camZoom;
+        this.validateData();
         this.selectImage(data.selectedImage);
     }
 }
