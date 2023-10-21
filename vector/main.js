@@ -482,8 +482,6 @@ class Render extends Renderer {
         graph.ctx.arc(graph.convSX(this.mouse.x), graph.convSY(this.mouse.y), 1, 0, 2 * Math.PI);
         graph.ctx.stroke();
         */
-        graph.drawText("States: " + this.states.length, 0, 0)
-        graph.drawText("StateIndex: " + this.stateIndex, 0, -0.5)
     }
 
     updateStateButtons() {
