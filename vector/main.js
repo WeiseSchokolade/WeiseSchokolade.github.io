@@ -490,10 +490,14 @@ class Render extends Renderer {
                 this.loadSelectedImage();
                 break;
             case "looping":
-                //uploadImageInput.setAttribute("disabled", "disabled");
                 uploadImageInput.style.display = "none";
                 this.image = new Image();
                 this.image.src = "./assets/looping.svg";
+                break;
+            case "looping_carts":
+                uploadImageInput.style.display = "none";
+                this.image = new Image();
+                this.image.src = "./assets/looping_carts.svg";
                 break;
             default:
                 console.log("Unknown type: " + value);
