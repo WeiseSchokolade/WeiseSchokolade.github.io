@@ -5,6 +5,9 @@ const body = document.body;
 const toolbox = document.getElementById("toolbox");
 const cameraHomeButton = document.getElementById("cameraHomeButton");
 const wipeButton = document.getElementById("wipeButton");
+const duplicateButton = document.getElementById("duplicateButton");
+const turnLeftButton = document.getElementById("turnLeftButton");
+const turnRightButton = document.getElementById("turnRightButton");
 const imageSelector = document.getElementById("imageSelect");
 const uploadImageInput = document.getElementById("uploadImageInput");
 const addButton = document.getElementById("addButton");
@@ -224,6 +227,21 @@ class Render extends Renderer {
             this.vectors = [];
             this.setMovingVector(null);
         };
+        duplicateButton.onclick = () => {
+            let newVec = this.movingVector.copy();
+            newVec.pos = newVec.pos.add(new Vector(1, -1).mulScalar(0.3));
+            newVec.recalculate();
+            this.vectors.push(newVec);
+            this.setMovingVector(newVec);
+        };
+        turnLeftButton.onclick = () => {
+            this.movingVector.vector = this.movingVector.vector.rotate(Math.PI * 0.5);
+            this.movingVector.recalculate();
+        }
+        turnRightButton.onclick = () => {
+            this.movingVector.vector = this.movingVector.vector.rotate(Math.PI * -0.5);
+            this.movingVector.recalculate();
+        }
         imageSelector.onchange = () => {
             this.selectImage(imageSelector.value);
         };
@@ -438,12 +456,18 @@ class Render extends Renderer {
             if (this.vectorInfoVisible) {
                 vectorInfoBox.style.visibility = "hidden";
                 removeSelectedButton.setAttribute("disabled", "disabled");
+                duplicateButton.setAttribute("disabled", "disabled");
+                turnLeftButton.setAttribute("disabled", "disabled");
+                turnRightButton.setAttribute("disabled", "disabled");
                 this.vectorInfoVisible = false;
             }
         } else {
             if (!this.vectorInfoVisible) {
                 vectorInfoBox.style.visibility = "visible";
                 removeSelectedButton.removeAttribute("disabled");
+                duplicateButton.removeAttribute("disabled");
+                turnLeftButton.removeAttribute("disabled");
+                turnRightButton.removeAttribute("disabled");
                 this.vectorInfoVisible = true;
             }
             vector.selected = true;
