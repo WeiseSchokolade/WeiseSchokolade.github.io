@@ -157,7 +157,7 @@ class VectorVisual {
 		g.ctx.stroke();
         if (this.label) {
             g.ctx.font = "" + (g.camera.zoom * 0.3) + "px Verdana";
-            g.drawText(this.label, this.vecTop.x + this.vector.normalise().x * 0.1, this.vecTop.y + this.vector.normalise().y * 0.1);
+            g.drawText(this.label, this.vecTop.x + this.vector.normalise().x * 0.1, this.vecTop.y + this.vector.normalise().y * 0.1, getComputedStyle(canvas).getPropertyValue("--text-color"));
         }
     }
 
