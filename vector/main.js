@@ -198,6 +198,7 @@ class Render extends Renderer {
         this.lastMouseX = 0;
         this.lastMouseY = 0;
         this.lastScroll = 0;
+        this.deltaTime = 0;
         this.movingVectorPos = false;
         this.movingVectorTop = false;
         this.movingVectorEnd = false;
@@ -317,9 +318,22 @@ class Render extends Renderer {
                 vectorLabelInput.blur();
             }
         }
+        document.addEventListener("copy", (event) => {
+            if (this.movingVector != null) {
+                console.log(this.serialiseVector(this.movingVector));
+                event.clipboardData.setData("text/plain", this.serialiseVector(this.movingVector));
+                event.preventDefault();
+            }
+        });
+        document.addEventListener("keyup", (event) => {
+            console.log(event.code);
+        });
+        document.addEventListener("copy", (event) => {
+            
+        });
         document.addEventListener("paste", (event) => {
             if (this.toolsLocked) return;
-            let content = event.clipboardData.items[0];
+            const content = event.clipboardData.items[0];
             if (content.type.indexOf("image") === 0) {
                 uploadImageInput.value = '';
                 this.selectImage("custom");
@@ -334,6 +348,14 @@ class Render extends Renderer {
                     image.src = event.target.result;
                 }
                 fileReader.readAsDataURL(file)
+            } else if (content.type.indexOf("text/plain") === 0) {
+                const data = event.clipboardData.getData("text");
+                let newVec = this.deserialiseVector(data);
+                console.log("Data", newVec);
+                if (!newVec) return;
+                let vecVisual = new VectorVisual(new Vector(this.camera.x - newVec.x * 0.5 + 0.2, this.camera.y - newVec.y * 0.5 + 0.2), newVec, randomColor());
+                console.log("Visual", vecVisual);
+                this.vectors.push(vecVisual);
             }
         });
         darkModeInput.onclick = () => {
@@ -350,6 +372,7 @@ class Render extends Renderer {
     }
 
     draw(graph, deltaTime) {
+        this.deltaTime = deltaTime;
         let newMouseX = this.mouse.screenX / this.camera.zoom;
         let newMouseY = -this.mouse.screenY / this.camera.zoom;
         let scroll = this.mouse.scroll;
@@ -571,20 +594,20 @@ class Render extends Renderer {
             case "none":
                 this.image = null;
                 //uploadImageInput.setAttribute("disabled", "disabled");
-                uploadImageInput.style.display = "none";
+                uploadImageInput.parentElement.style.display = "none";
                 break;
             case "custom":
-                uploadImageInput.style.display = "block";
+                uploadImageInput.parentElement.style.display = "block";
                 //uploadImageInput.removeAttribute("disabled");
                 this.loadSelectedImage();
                 break;
             case "looping":
-                uploadImageInput.style.display = "none";
+                uploadImageInput.parentElement.style.display = "none";
                 this.image = new Image();
                 this.image.src = "./assets/looping.svg";
                 break;
             case "looping_carts":
-                uploadImageInput.style.display = "none";
+                uploadImageInput.parentElement.style.display = "none";
                 this.image = new Image();
                 this.image.src = "./assets/looping_carts.svg";
                 break;
@@ -612,6 +635,19 @@ class Render extends Renderer {
         if (!this.camera.x) this.camera.x = 0;
         if (!this.camera.y) this.camera.y = 0;
         if (!this.camera.zoom) this.camera.zoom = 50;
+    }
+
+    deserialiseVector(data) {
+        data = data.substring(1, data.length - 1);
+        let splitData = data.split("|");
+        if (splitData.length != 2) {
+            return undefined;
+        }
+        return new Vector(parseFloat(splitData[0]), parseFloat(splitData[1]));
+    }
+
+    serialiseVector(visualVector) {
+        return "(" + visualVector.vector.x + "|" + visualVector.vector.y + ")";
     }
 
     saveData() {
