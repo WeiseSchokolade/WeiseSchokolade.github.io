@@ -31,7 +31,7 @@ const NOTES = [
 	{height:  5, name: "as1" , simple: "As" , base: "A", type: TYPE.FLAT},
 	{height:  5, name: "a1"  , simple: "A"  , base: "A", type: TYPE.NATURAL},
 	{height:  5, name: "ais1", simple: "Ais", base: "A", type: TYPE.SHARP},
-	{height:  6, name: "b1"  , simple: "B"  , base: "B", type: TYPE.FLAT},
+	{height:  6, name: "b1"  , simple: "B"  , base: "B", type: TYPE.NATURAL},
 	{height:  6, name: "h1"  , simple: "H"  , base: "H", type: TYPE.NATURAL},
 	{height:  7, name: "c2"  , simple: "C"  , base: "C", type: TYPE.NATURAL},
 	{height:  7, name: "cis2", simple: "Cis", base: "C", type: TYPE.SHARP},
@@ -48,14 +48,14 @@ const NOTES = [
 	{height: 12, name: "as2" , simple: "As" , base: "A", type: TYPE.FLAT},
 	{height: 12, name: "a2"  , simple: "A"  , base: "A", type: TYPE.NATURAL},
 	{height: 12, name: "ais2", simple: "Ais", base: "A", type: TYPE.SHARP},
-	{height: 13, name: "b2"  , simple: "B"  , base: "B", type: TYPE.FLAT},
+	{height: 13, name: "b2"  , simple: "B"  , base: "B", type: TYPE.NATURAL},
 	{height: 13, name: "h2"  , simple: "H"  , base: "H", type: TYPE.NATURAL},
 	{height: 14, name: "c3"  , simple: "C"  , base: "C", type: TYPE.NATURAL},
 ];
 
 let NATURAL_NOTES = [];
 for (let i = 0; i < NOTES.length; i++) {
-	if (NOTES[i].type == TYPE.NATURAL) {
+	if (NOTES[i].type == TYPE.NATURAL && NOTES[i].base != "B") {
 		NATURAL_NOTES.push(NOTES[i]);
 	}
 }
