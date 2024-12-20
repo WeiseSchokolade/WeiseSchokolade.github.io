@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes 2 Einstellungen</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <select id="keyboard_type">
+        <option value="THREE_BUTTONS">Drei Knöpfe</option>
+        <option value="KEYBOARD">TASTATUR</option>
+    </select>
+    <div>
+        <label for="chromatic">Chromatisch: </label>
+        <input name="chromatic" id="chromatic" type="checkbox">
+    </div>
+    <div>
+        <label for="simpleNames">Vereinfachte Namen: </label>
+        <input name="simpleNames" id="simpleNames" type="checkbox">
+    </div>
+    <button id="saveButton">Speichern</button>
+    <script>
+        document.getElementById("saveButton").onclick = () => {
+            let settings = {
+                keyboard_type: document.getElementById("keyboard_type").value,
+                chromatic: document.getElementById("chromatic").value,
+                simpleNames: document.getElementById("simpleNames").value
+            }
+            document.cookie = JSON.stringify(settings);
+        }
+    </script>
+</body>
+</html>
