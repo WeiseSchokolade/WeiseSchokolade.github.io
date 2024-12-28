@@ -21,6 +21,7 @@
         <input name="simpleNames" id="simpleNames" type="checkbox">
     </div>
     <button id="saveButton">Speichern</button>
+    <button id="backButton">Zurück</button>
     <script>
         document.getElementById("saveButton").onclick = () => {
             let settings = {
@@ -30,6 +31,9 @@
             }
             document.cookie = JSON.stringify(settings);
         }
+        document.getElementById("backButton").addEventListener("click", () => {
+            window.open("index.html", "_self");
+        });
     </script>
 </body>
 </html>
