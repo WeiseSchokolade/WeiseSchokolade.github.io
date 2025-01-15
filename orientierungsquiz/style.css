@@ -1,0 +1,51 @@
+:root {
+    height: 100%;
+}
+
+body {
+    margin: 0px;
+    height: 100%;
+}
+
+.content {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.results_title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 8px;
+    gap: 8px;
+}
+
+#questionContainer {
+    text-align: center;
+}
+
+.title {
+    display: flex;
+    justify-content: center;
+}
+
+.agreeButtons {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+}
+
+@media screen and (orientation: landscape) {
+    .content {
+        margin-left: 20%;
+        margin-right: 20%;
+    }
+}
