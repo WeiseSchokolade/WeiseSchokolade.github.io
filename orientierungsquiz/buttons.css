@@ -1,0 +1,44 @@
+
+.interactionButton:hover {
+    filter: brightness(95%);
+}
+
+.interactionButton:active {
+    filter: brightness(80%);
+}
+
+.interactionButton:disabled {
+    filter: brightness(60%);
+}
+
+.interactionButton:focus-visible {
+    text-decoration: underline;
+}
+
+.agreeButton {
+    width: 150px;
+    height: 50px;
+    appearance: none;
+    background-color: #00dba4;
+    border-radius: var(--roundedness);
+    border: none;
+    font-weight: 700;
+    color: #dbfff6;
+    line-height: 13px;
+    font-size: 13px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition-duration: 0.2s;
+    border-inline: none;
+    outline: none;
+}
+
+.metaButton {
+    border-radius: var(--roundedness);
+    width: 150px;
+    height: 50px;
+    font-size: 20px;
+    background-color: white;
+    border: none;
+    padding: 10px 20px 10px 20px;
+    margin: 5px;
+}

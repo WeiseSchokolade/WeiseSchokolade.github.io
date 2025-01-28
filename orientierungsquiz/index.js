@@ -28,19 +28,21 @@ function showQuestionDisplay() {
         <div class="title">
             <div>Frage <span id="questionIndex">${currentQuestion + 1}</span> / ${questions.length}</div>
         </div>
-        <div id="questionContainer">
-            ${questions[currentQuestion]}
+        <div class="questionContainerContainer">
+            <div id="questionContainer">
+                ${questions[currentQuestion]}
+            </div>
         </div>
         <div class="agreeButtons">
-            <button id="agreeFullyButton">Stimme voll zu</button>
-            <button id="agreePartlyButton">Stimme eher zu</button>
-            <button id="unsureButton">Unentschieden</button>
-            <button id="disagreePartlyButton">Stimme eher nicht zu</button>
-            <button id="disagreeFullyButton">Stimme gar nicht zu</button>
+            <button class="agreeButton interactionButton" id="agreeFullyButton">Stimme voll zu</button>
+            <button class="agreeButton interactionButton" id="agreePartlyButton">Stimme eher zu</button>
+            <button class="agreeButton interactionButton" id="unsureButton">Unentschieden</button>
+            <button class="agreeButton interactionButton" id="disagreePartlyButton">Stimme eher nicht zu</button>
+            <button class="agreeButton interactionButton" id="disagreeFullyButton">Stimme gar nicht zu</button>
         </div>
         <div class="buttonContainer">
-            <button id="proceedBtn" disabled>Weiter</button>
-            <button id="backBtn" disabled>Zurück</button>
+            <button class="metaButton interactionButton" id="proceedBtn" disabled>Weiter</button>
+            <button class="metaButton interactionButton" id="backBtn" disabled>Zurück</button>
         </div>
     `;
     buttons = [
@@ -107,7 +109,7 @@ function showSummary() {
 
         </div>
         <div class="buttonContainer">
-            <button id="proceedBtn2">
+            <button class="metaButton interactionButton" id="proceedBtn2">
                 Ergebnisse anzeigen...
             </button>
         </div>
@@ -115,15 +117,17 @@ function showSummary() {
     const responsesDiv = document.querySelector("#responses");
     for (let i = 0; i < questions.length; i++) {
         responsesDiv.innerHTML += `
-            <div>
-                Frage: ${questions[i]}
-                Antwort: <select id="responseSelect${i}">
-                    <option value="2" ${responses[i] == 2 ? "selected" : ""}>Stimme voll zu</option>
-                    <option value="1" ${responses[i] == 1 ? "selected" : ""}>Stimme eher zu</option>
-                    <option value="0" ${responses[i] == 0 ? "selected" : ""}>Unsicher</option>
-                    <option value="-1" ${responses[i] == -1 ? "selected" : ""}>Stimme eher nicht zu</option>
-                    <option value="-2" ${responses[i] == -2 ? "selected" : ""}>Stimme gar nicht zu</option>
-                </select>
+            <div class="summaryItem">
+                <div class="summaryQuestion">${questions[i]}</div>
+                <div class="summaryResponse">
+                    <select class="summarySelect" id="responseSelect${i}">
+                        <option value="2" ${responses[i] == 2 ? "selected" : ""}>Stimme voll zu</option>
+                        <option value="1" ${responses[i] == 1 ? "selected" : ""}>Stimme eher zu</option>
+                        <option value="0" ${responses[i] == 0 ? "selected" : ""}>Unsicher</option>
+                        <option value="-1" ${responses[i] == -1 ? "selected" : ""}>Stimme eher nicht zu</option>
+                        <option value="-2" ${responses[i] == -2 ? "selected" : ""}>Stimme gar nicht zu</option>
+                    </select>
+                </div>
             <div>
         `;
         let select = document.querySelector("#responseSelect" + i);
@@ -147,19 +151,31 @@ function showResults() {
         <div class="title">
             <div>Ergebnis</div>
         </div>
-        <div>
-            <div class="results_title">
-                <div>-7</div>
-                <div>Werteorientierung</div>
-                <div>7</div>
+        <div class="results">
+            <div class="resultStat">
+                <div class="results_title">
+                    Werteorientierung
+                </div>
+                <div class="resultContainer">
+                    <div>Liberal</div>
+                    <div class="resultSlider">
+                        <div class="resultThumb" style="left: ${(-werteorientierung + questions.length) / (questions.length * 2) * 95}%"></div>
+                    </div>
+                    <div>Konservativ</div>
+                </div>
             </div>
-            <input type="range" min="${-2 * questions.length / 2}" max="${2 * questions.length / 2}" value="${-werteorientierung}" disabled>
-            <div class="results_title">
-                <div>-7</div>
-                <div>Wirtschaftliche/Soziale Grundordnung</div>
-                <div>7</div>
+            <div class="resultStat">
+                <div class="results_title">
+                    Wirtschaftliche/Soziale Grundordnung
+                </div>
+                <div class="resultContainer">
+                <div>Liberal</div>
+                    <div class="resultSlider">
+                        <div class="resultThumb" style="left: ${(-wirtschaft + questions.length) / (questions.length * 2) * 95}%"></div>
+                    </div>
+                    <div>Sozial</div>
+                </div>
             </div>
-            <input type="range" min="${-2 * questions.length / 2}" max="${2 * questions.length / 2}" value="${-wirtschaft}" disabled>
         </div>
     `;
 }
