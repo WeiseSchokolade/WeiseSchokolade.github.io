@@ -19,11 +19,11 @@
     width: 150px;
     height: 50px;
     appearance: none;
-    background-color: #00dba4;
+    background-color: #ffffff;
     border-radius: var(--roundedness);
     border: none;
     font-weight: 700;
-    color: #dbfff6;
+    color: #000000;
     line-height: 13px;
     font-size: 13px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -38,6 +38,7 @@
     height: 50px;
     font-size: 20px;
     background-color: white;
+    color: black;
     border: none;
     padding: 10px 20px 10px 20px;
     margin: 5px;

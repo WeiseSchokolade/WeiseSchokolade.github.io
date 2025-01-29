@@ -146,11 +146,11 @@ body {
 }
 
 .summarySelect {
-    background-color: #00ad85;
+    background-color: #ffffff;
     border: none;
     border-radius: var(--roundedness);
     padding: 10px;
-    color: lightgray;
+    color: #000000;
 }
 
 @media screen and (orientation: landscape) {
