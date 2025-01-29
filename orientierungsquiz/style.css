@@ -1,6 +1,6 @@
 :root {
     height: 100%;
-    --roundedness: 2px;
+    --roundedness: 10px;
     overflow: hidden;
 }
 
