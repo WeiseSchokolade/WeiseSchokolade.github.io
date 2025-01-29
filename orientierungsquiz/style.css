@@ -2,6 +2,7 @@
     height: 100%;
     --roundedness: 10px;
     overflow: hidden;
+    background-color: #007a5b;
 }
 
 body {
