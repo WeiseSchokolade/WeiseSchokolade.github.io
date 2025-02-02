@@ -39,6 +39,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    height: 100%;
 }
 
 .buttonContainer {
@@ -86,8 +87,10 @@ body {
 
 .results {
     gap: 5px;
-    width: 80vw;
     color: white;
+    overflow: scroll;
+    max-width: 98vw;
+    height: calc(100vh - 4vh - 8vw - 4vh);
 }
 
 .results_title {
@@ -151,6 +154,23 @@ body {
     border-radius: var(--roundedness);
     padding: 10px;
     color: #000000;
+}
+
+.resultCoord {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.resultCanvasContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#resultsCanvas {
+    width: 70vw;
+    height: 70vh;
 }
 
 @media screen and (orientation: landscape) {
