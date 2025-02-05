@@ -23,6 +23,12 @@ let responded = [];
 let currentQuestion = 0;
 let buttons;
 
+function restart() {
+    responses = [];
+    responded = [];
+    currentQuestion = 0;
+}
+
 function showQuestionDisplay() {
     dynamicContent.innerHTML = `
         <div class="title">
@@ -193,9 +199,17 @@ function showResults() {
                 <span>
                     Nein! Sobald die Seite neu geladen wird, sind deine Daten gelöscht.
                 </span>
+                <h3>Kann ich das Quiz wiederholen?</h3>
+                <span>
+                    <button id="restartButton" class="metaButton">Quiz wiederholen</button>
+                </span>
             </div>
         </div>
     `;
+    document.getElementById("restartButton").onclick = () => {
+        restart();
+        showQuestionDisplay();
+    };
     const resultsCanvas = document.getElementById("resultsCanvas");
     resultsCanvas.width = resultsCanvas.clientWidth;
     resultsCanvas.height = resultsCanvas.clientHeight;
