@@ -216,6 +216,10 @@ body {
     height: 70vh;
 }
 
+#restartButton {
+    width: 300px;
+}
+
 @media screen and (orientation: landscape) {
     .content {
         margin-left: 20%;

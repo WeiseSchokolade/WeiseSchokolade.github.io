@@ -20,4 +20,4 @@ export function showStartpage() {
     };
 }
 
-showStartpage();
+showStartPage();
