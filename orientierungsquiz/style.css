@@ -99,7 +99,7 @@ body {
     justify-content: center;
 }
 
-#questionContainer {
+.questionContainer {
     text-align: center;
     width: 90vw;
     max-width: 150vh;
@@ -110,15 +110,19 @@ body {
     padding: 15px;
     margin: 15px;
     font-weight: 500;
+    user-select: none;
 }
 
 .title {
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
     font-weight: 700;
     font-size: 4vh;
     margin: 4vw;
     color: white;
+    user-select: none;
 }
 
 .agreeButtons {
@@ -126,6 +130,32 @@ body {
     justify-content: center;
     gap: 4px;
     flex-wrap: wrap;
+}
+
+.scaleButtons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: background-color linear 0.2s;
+}
+
+#agreementScale {
+    width: 90vw;
+    height: 25px;
+    background-color: white;
+    border-radius: 25px;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+}
+
+#agreementThumb {
+    width: auto;
+    height: 0px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background-color: black;
+    transition: margin-left ease-out 0.05s, height linear 0.05s;
 }
 
 .results {

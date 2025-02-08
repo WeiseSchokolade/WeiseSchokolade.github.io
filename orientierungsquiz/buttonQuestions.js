@@ -1,5 +1,4 @@
-import { drawResults } from "./results.js";
-import { showStartpage } from "./index.js";
+import { drawResults, showResultsFAQ } from "./results.js";
 
 const dynamicContent = document.getElementById("dynamicContent");
 
@@ -26,13 +25,21 @@ let responded = [];
 let currentQuestion = 0;
 let buttons;
 
+export function startButtonQuestions() {
+    responses = [];
+    responded = [];
+    currentQuestion = 0;
+    buttons = null;
+    showQuestionDisplay();
+}
+
 export function showQuestionDisplay() {
     dynamicContent.innerHTML = `
         <div class="title">
             <div>Frage <span id="questionIndex">${currentQuestion + 1}</span> / ${questions.length}</div>
         </div>
         <div class="questionContainerContainer">
-            <div id="questionContainer">
+            <div class="questionContainer" id="questionContainer">
                 ${questions[currentQuestion]}
             </div>
         </div>
@@ -174,32 +181,11 @@ function showResults() {
                     liberal
                 </div>
             </div>
-            <div>
-                <h1>FAQ</h1>
-                <h3>Woher kommen die Fragen?</h3>
-                <span>
-                    Die Fragen wurden basierend auf dem Fragenkatalog von <a href="https://www.politnavi.de/">https://www.politnavi.de/</a> erstellt. 
-                </span>
-                <h3>Was fange ich mit meinem Ergebnis an?</h3>
-                <span>
-                    Politische Orientierung ist komplexer, als dass sie auf zwei Achsen dargestellt werden könnte. Ein kurzes Online-Quiz bricht komplexe
-                    Themen auf vereinfachte Fragen herunter. Wie du vielleicht gemerkt hast, bräuchte man für all diese Fragen viel mehr Antwortmöglichkeiten -
-                    von "Stimme zu, aber nur unter der Bedingung, dass..." bis hin zu "Stimme nicht zu, aber nur, weil ..." kann alles dabei sein. Es ist somit
-                    wichtig, sich für die Wahl einer Partei die Parteiprogramme und die Kandidaten der Parteien genauer anzuschauen. Die Ergebnisse dieses Quiz
-                    können zumindest dazu verwendet werden, einzuschränken, welche Parteiprogramme man sich überhaupt anschauen möchte. 
-                </span>
-                <h3>Ich habe ein Ergebnis erhalten, das nicht zu mir passt.</h3>
-                <span>
-                    Das kann schon mal passieren! Das kann daran liegen, dass die Fragen, die dir wichtig sind, in diesem Quiz nicht enthalten sind.
-                    Denke mal darüber nach! Wenn du zu unserem Stand kommst, können wir auch noch mehr darüber sprechen, welche Parteien dir gefallen könnten.
-                </span>
-                <h3>Werden meine Daten gespeichert?</h3>
-                <span>
-                    Nein! Sobald die Seite neu geladen wird, sind deine Daten gelöscht.
-                </span>
+            <div id="resultsFAQ">
             </div>
         </div>
     `;
+    showResultsFAQ();
     const resultsCanvas = document.getElementById("resultsCanvas");
     resultsCanvas.width = resultsCanvas.clientWidth;
     resultsCanvas.height = resultsCanvas.clientHeight;

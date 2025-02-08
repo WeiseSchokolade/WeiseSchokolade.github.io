@@ -1,4 +1,5 @@
-import { showQuestionDisplay } from "./buttonQuestions.js";
+import { startButtonQuestions } from "./buttonQuestions.js";
+import { startScaleQuestions } from "./scaleQuestions.js";
 
 const dynamicContent = document.getElementById("dynamicContent");
 
@@ -11,13 +12,16 @@ export function showStartpage() {
             <h4>Und wen wählst du?</h4>
         </div>
         <div class="startButtonContainer">
-            <button id="startClassificationButton" class="interactionButton metaButton" onclick="showQuestionDisplay()">Start</button>
-            <button id="startReflectionButton" class="interactionButton metaButton">Start (5 Antworten)</button>
+        <button id="startReflectionButton" class="interactionButton metaButton">Start (Skala)</button>
+        <button id="startClassificationButton" class="interactionButton metaButton" onclick="showQuestionDisplay()">Start (Veraltet)</button>
         </div>
     `;
+    document.getElementById("startClassificationButton").onclick = () => {
+        startButtonQuestions();
+    };
     document.getElementById("startReflectionButton").onclick = () => {
-        showQuestionDisplay();
+        startScaleQuestions();
     };
 }
 
-showStartPage();
+showStartpage();
