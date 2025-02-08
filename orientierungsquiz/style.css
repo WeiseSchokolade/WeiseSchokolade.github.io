@@ -42,6 +42,49 @@ body {
     height: 100%;
 }
 
+.startHeader {
+    color: white;
+    text-shadow: 2px 2px #000000;
+    text-align: center;
+}
+
+.startHeader h1 {
+    font-size: 5vh;
+    line-height: 5vh;
+    margin: 2vh;
+}
+
+.startHeader h2 {
+    font-size: 4vh;
+    line-height: 4vh;
+    margin: 2vh;
+}
+
+.startHeader h3 {
+    font-size: 1.75vh;
+    line-height: 1.75vh;
+    margin: 2vh;
+}
+
+.startHeader h4 {
+    font-size: 8vh;
+    margin-top: 8vh;
+}
+
+#startReflectionButton {
+    width: 300px;
+}
+
+#startClassificationButton {
+    width: 300px;
+}
+
+.startButtonContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 .buttonContainer {
     display: flex;
     justify-content: center;
