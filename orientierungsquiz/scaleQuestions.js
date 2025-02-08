@@ -63,13 +63,21 @@ function showScaleDisplay() {
     }
     agreementScale.onclick = moveThumb;
     let mouseDown = false;
-    agreementScale.onmousedown = () => {
+    agreementScale.ontouchstart = agreementScale.onmousedown = () => {
         mouseDown = true;
     }
     window.onmouseup = () => {
         mouseDown = false;
     }
     window.onmousemove = (event) => {
+        if (mouseDown) {
+            moveThumb(event);
+        }
+    }
+    window.ontouchend = (event) => {
+        mouseDown = false;
+    }
+    agreementScale.ontouchmove = (event) => {
         if (mouseDown) {
             moveThumb(event);
         }
