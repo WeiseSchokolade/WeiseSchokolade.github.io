@@ -74,7 +74,7 @@ function showScaleDisplay() {
             moveThumb(event);
         }
     }
-    window.ontouchend = (event) => {
+    window.ontouchend = () => {
         mouseDown = false;
     }
     agreementScale.ontouchmove = (event) => {

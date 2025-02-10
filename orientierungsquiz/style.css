@@ -111,6 +111,7 @@ body {
     margin: 15px;
     font-weight: 500;
     user-select: none;
+    -webkit-user-select: none;
 }
 
 .title {
@@ -123,6 +124,8 @@ body {
     margin: 4vw;
     color: white;
     user-select: none;
+    -webkit-user-select: none;
+    text-align: center;
 }
 
 .agreeButtons {
