@@ -3,6 +3,8 @@ import { startScaleQuestions } from "./scaleQuestions.js";
 
 const dynamicContent = document.getElementById("dynamicContent");
 
+export let showParties = true;
+
 export function showStartpage() {
     dynamicContent.innerHTML = `
         <div class="startHeader">

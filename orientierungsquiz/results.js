@@ -1,49 +1,57 @@
-import { showStartpage } from "./index.js";
+import { showStartpage, showParties } from "./index.js";
 
 export function drawCoordinateSystem(ctx, width, height) {
     ctx.beginPath();
-    ctx.strokeStyle = "black";
+    ctx.strokeStyle = "white";
+    ctx.lineWidth = 3;
     ctx.moveTo(0, height / 2);
     ctx.lineTo(width, height / 2);
     ctx.moveTo(width / 2, 0);
     ctx.lineTo(width / 2, height);
     ctx.stroke();
+    ctx.lineWidth = 1;
 }
 
 export function drawResults(canvas, width, height, werteorientierung, wirtschaft, questions) {
-    const diagonal = Math.sqrt(width * width + height * height);
-    console.log(width, height, diagonal);
     let ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, width, height);
     drawCoordinateSystem(ctx, width, height);
     
-	ctx.beginPath();
-	ctx.arc(
-        (-werteorientierung + questions.length) / (questions.length * 2) * (width - 10) + 5,
-        (wirtschaft + questions.length) / (questions.length * 2) * (height - 10) + 5, 5, 0, 2 * Math.PI);
-	ctx.fill();
+    drawParty(ctx, width, height, "Du", "#FFFFFF", 0.05, werteorientierung, wirtschaft, questions);
+    if (showParties) {
+        let partySize = 0.075;
+        drawParty(ctx, width, height, "Union", "#000000", partySize, -3, -4, questions);
+        drawParty(ctx, width, height, "SPD", "#FF0000", partySize, 4, 4, questions);
+        drawParty(ctx, width, height, "FDP", "#FFFF00", partySize, -10, 3, questions);
+        drawParty(ctx, width, height, "Grünen", "#00FF00", partySize, 3, 11, questions);
+        drawParty(ctx, width, height, "Linke", "#FF00FF", partySize, 10, 6, questions);
+        drawParty(ctx, width, height, "AfD", "#00C0FF", partySize, -5, -12, questions);
+        drawParty(ctx, width, height, "BSW", "#C000C0", partySize, 6, -5, questions);
+    }
 }
 
 export function drawParty(ctx, width, height, label, color, radius, werteorientierung, wirtschaft, questions) {
 	ctx.beginPath();
     ctx.strokeStyle = color;
     ctx.fillStyle = color + "A0";
-    let centerX = (-werteorientierung + questions.length) / (questions.length * 2) * (width - radius - 2) + radius + 2;
-    let centerY = (wirtschaft + questions.length) / (questions.length * 2) * (height - radius - 2) + radius + 2;
-	ctx.arc(
+    let centerX = (-werteorientierung + questions.length) / (questions.length * 2) * (width - (radius * width) * 2 - 4) + (radius * width) + 2;
+    let centerY = (wirtschaft + questions.length) / (questions.length * 2) * (height - (radius * height) * 2 - 4) + (radius * height) + 2;
+	ctx.ellipse(
         centerX,
-        centerY, radius, 0, 2 * Math.PI);
+        centerY,
+        radius * width,
+        radius * height,
+        0, 0, 2 * Math.PI);
 	ctx.fill();
     ctx.stroke();
 
-    let labelMeasurements = ctx.measureText(label);
     ctx.fillStyle = "#FFFFFF"
-    ctx.fillText(label, centerX - labelMeasurements.width / 2, centerY + (labelMeasurements.actualBoundingBoxAscent + labelMeasurements.actualBoundingBoxDescent) / 2)
+    drawText(ctx, label, centerX, centerY);
 }
 
-export function drawText() {
-    let labelMeasurements = ctx.measureText(label);
-    ctx.fillText(label, centerX - labelMeasurements.width / 2, centerY + (labelMeasurements.actualBoundingBoxAscent + labelMeasurements.actualBoundingBoxDescent) / 2)
+export function drawText(ctx, text, x, y) {
+    let textMeasurements = ctx.measureText(text);
+    ctx.fillText(text, x - textMeasurements.width / 2, y + (textMeasurements.actualBoundingBoxAscent + textMeasurements.actualBoundingBoxDescent) / 2)
 }
 
 export function showResultsFAQ() {

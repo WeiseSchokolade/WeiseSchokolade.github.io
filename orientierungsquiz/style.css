@@ -244,9 +244,16 @@ body {
     align-items: center;
 }
 
+.resultCanvasContainer div {
+    width: 100px;
+}
+
 #resultsCanvas {
-    width: 70vw;
-    height: 70vh;
+    width: 65vw;
+    height: 65vh;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: var(--roundedness);
+    padding: 5px
 }
 
 #restartButton {

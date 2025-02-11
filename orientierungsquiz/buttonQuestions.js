@@ -189,10 +189,10 @@ function showResults() {
     const resultsCanvas = document.getElementById("resultsCanvas");
     resultsCanvas.width = resultsCanvas.clientWidth;
     resultsCanvas.height = resultsCanvas.clientHeight;
-    drawResults(resultsCanvas, resultsCanvas.width, resultsCanvas.height, werteorientierung, wirtschaft, questions);
+    drawResults(resultsCanvas, resultsCanvas.width, resultsCanvas.height, wirtschaft, werteorientierung, questions);
     window.onresize = () => {
         resultsCanvas.width = resultsCanvas.clientWidth;
         resultsCanvas.height = resultsCanvas.clientHeight;
-        drawResults(resultsCanvas, resultsCanvas.width, resultsCanvas.height, werteorientierung, wirtschaft, questions);
+        drawResults(resultsCanvas, resultsCanvas.width, resultsCanvas.height, wirtschaft, werteorientierung, questions);
     }
 }
