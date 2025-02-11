@@ -143,8 +143,8 @@ function showSummary() {
             <div>
         `;
         let select = document.querySelector("#responseSelect" + questionId);
-        select.onclick = () => {
-            responses[questionId] = select.value;
+        select.oninput = () => {
+            responses[questionId] = parseInt(select.value);
         };
     }
     document.querySelector("#proceedBtn2").onclick = () => {
