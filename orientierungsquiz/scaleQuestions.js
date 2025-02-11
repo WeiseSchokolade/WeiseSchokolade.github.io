@@ -184,7 +184,7 @@ function showResults() {
     const draw = window.onresize = () => {
         resultsCanvas.width = resultsCanvas.clientWidth;
         resultsCanvas.height = resultsCanvas.clientHeight;
-        drawResults(resultsCanvas, resultsCanvas.width, resultsCanvas.height, (werteorientierung / werteorientierungWeight) * questions.length, (wirtschaft / wirtschaftWeight) * questions.length, questions);
+        drawResults(resultsCanvas, resultsCanvas.width, resultsCanvas.height, -(werteorientierung / werteorientierungWeight) * questions.length, -(wirtschaft / wirtschaftWeight) * questions.length, questions);
     }
     draw();
 }
