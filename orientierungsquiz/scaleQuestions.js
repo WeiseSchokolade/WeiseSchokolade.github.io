@@ -52,8 +52,9 @@ function showScaleDisplay() {
     }
     const agreementScale = document.getElementById("agreementScale");
     const agreementThumb = document.getElementById("agreementThumb");
+    let mouseX;
     function moveThumb(event) {
-        const mouseX = event.clientX;
+        if (event && event.clientX) mouseX = event.clientX;
         const scaleBox = agreementScale.getBoundingClientRect();
         delete currentResponse.dontCare;
         currentResponse.agreement = Math.max(Math.min((mouseX - (scaleBox.x + 12.5)) / (scaleBox.width - 25), 1), 0);
@@ -79,7 +80,8 @@ function showScaleDisplay() {
     }
     agreementScale.ontouchmove = (event) => {
         if (mouseDown) {
-            moveThumb(event);
+            mouseX = event.touches[0].clientX;
+            moveThumb();
         }
     }
     updateDisplayButtons();
