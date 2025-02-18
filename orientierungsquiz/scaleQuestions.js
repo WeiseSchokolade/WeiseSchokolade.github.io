@@ -162,7 +162,7 @@ function showResults() {
         <div class="results">
             <div class="resultCoord">
                 <div>
-                    konservativ
+                    konservativ/autoritär
                 </div>
                 <div class="resultCanvasContainer">
                     <div style="text-align: right;">
